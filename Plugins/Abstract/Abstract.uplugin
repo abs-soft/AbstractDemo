@@ -1,0 +1,40 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Abstract UE Plugin",
+	"Description": "",
+	"Category": "Other",
+	"CreatedBy": "Abstract Software, Inc.",
+	"CreatedByURL": "abstractsoft.net",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"EnabledByDefault":  true,
+	"CanContainContent": false,
+	"IsBetaVersion": true,
+	"IsExperimentalVersion": false,
+	"CanBeUsedWithUnrealHeaderTool": true,
+	"Modules": [
+		{
+			"Name": "AbstractSDK",
+			"Type": "Runtime",
+			"LoadingPhase": "EarliestPossible"
+		},
+		{
+			"Name": "AbstractAccessibleGenerator",
+			"Type": "Program",
+			"LoadingPhase": "PostConfigInit"
+		},
+		{
+			"Name": "AbstractAccessible",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault"
+		},
+		{
+			"Name": "AbstractAccessibleRuntime",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}

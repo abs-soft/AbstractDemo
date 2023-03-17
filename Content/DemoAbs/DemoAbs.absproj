@@ -1,0 +1,16 @@
+{
+  "Identifier": "43d92581-ed62-4324-b89d-e1e91725dec2",
+  "ProjectName": "DemoAbs",
+  "ExportDirectory": "$(ABSTRACT_PROJECT_ROOT)\\Export",
+  "ParentProjectData": {
+    "ParentProjectSolutionFilepath": "$(ABSTRACT_PROJECT_ROOT)\\..\\..\\Plugins\\Abstract\\Source\\AbstractAccessibleExtern\\Source\\AbstractAccessible.sln"
+  },
+  "InternalData": {
+    "ProjectName": "DemoAbs",
+    "BuildItems": {
+      "ChildrenNamespaceEntries": {},
+      "ChildrenEntries": []
+    }
+  },
+  "Version": "FACE2C42-B5B7-473C-B9B8-352D5329B35E"
+}

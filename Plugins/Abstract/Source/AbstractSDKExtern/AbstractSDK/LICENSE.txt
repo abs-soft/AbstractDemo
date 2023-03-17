@@ -1,0 +1,224 @@
+SOFTWARE DEVELOPMENT KIT LICENSE AGREEMENT
+
+This Software Development Kit License Agreement (“Agreement”) is entered into between you and
+Abstract Software, Inc. (“Abstract”) and governs the authorized use of and license to Abstract’s Software
+Development Kit (the “SDK”). Abstract provides this SDK, which includes the online or electronic
+documentation that accompanies or is made available to you in connection with the SDK, including,
+without limitation, any and all tutorials, help files and other files that accompany such materials, and any
+updates or upgrades to such materials that may be provided by Abstract under this Agreement from time
+to time (the “Licensed Materials”) for the sole purpose of allowing you to use the Licensed Materials to
+integrate all or any portion of Abstract computer software, executable files, scripts, libraries, include files,
+sample code, redistributable code, add-ons, stencils, templates, and filters, in each instance in source or
+object code form, as applicable, together with any updates or upgrades that may be provided by Abstract
+under this Agreement from time to time (the “Licensed Software”) into your internal networks. You must
+be at least 18 years old to use the SDK. By agreeing to this Agreement, you represent and warrant to us
+that: (i) you are at least 18 years old; and (ii) your registration and your use of the SDK is in compliance
+with any and all applicable laws and regulations. If you are entering into this Agreement on behalf of a
+legal entity, you represent that you have the right to bind that entity to this Agreement, and all reference
+to “you” refers both to you personally and to such entity. YOU MUST READ AND AGREE TO THE
+TERMS OF THIS AGREEMENT BEFORE USING OR DOWNLOADING THE SDK. BY CLICKING “I
+ACCEPT” OR BY DOWNLOADING OR USING ANY PORTION OF THE SDK, YOU AGREE, ON
+BEHALF OF YOURSELF AND ANY ENTITY THAT YOU REPRESENT, TO BE BOUND BY THE TERMS
+AND CONDITIONS OF THIS AGREEMENT. IF YOU ARE NOT ELIGIBLE, OR DO NOT AGREE TO
+THE TERMS OF THIS AGREEMENT, THEN YOU DO NOT HAVE OUR PERMISSION TO ACCESS,
+DOWNLOAD, COPY OR USE THE SDK.
+1. LICENSE GRANT
+1.1 Registration. To access the SDK, you must register for an account on the Abstract website. You
+agree that all information provided at the time of account registration, including without limitation, contact
+information and, if applicable, billing information, is accurate, and that you will keep it accurate and up-to-
+date at all times. You are solely responsible for maintaining the confidentiality of your account and
+password, and you accept responsibility for all activities that occur under your account. If you believe that
+your account is no longer secure, then you must immediately notify Abstract at help@abstractsoft.net.
+1.2 License Grant. Subject to the terms of this Agreement, Abstract hereby grants to you a non-
+exclusive, personal, revocable, nontransferable, limited right and license, subject to any applicable
+restrictions set forth herein, to use the Licensed Materials internally for the purpose stated above. You
+may make a reasonable number of copies of any Licensed Materials so as to use the SDK for the
+intended purposes stated above.
+1.3 License Restrictions. You will not, and you will not allow any of your directors, officers, employees,
+agents, distributors, end users or contractors (collectively, “Affiliates”) to, reverse engineer, disassemble,
+decompile or otherwise attempt to derive the source code or the underlying ideas, algorithms, structure or
+organization of the Licensed Software or Licensed Materials, in whole or in part (except to the extent that
+applicable law prohibits reverse engineering restrictions). Neither you nor your Affiliates shall lease, loan,
+timeshare, or sell the Licensed Software or Licensed Materials, in whole or in part; create derivative
+works of or otherwise modify the Licensed Software or Licensed Materials except as expressly permitted
+by Section 2.2; attempt to hack, disable, defeat, avoid, bypass, remove, deactivate, circumvent or
+otherwise interfere with Abstract’s products, technology, software or services, including any software
+protection mechanisms in the Licensed Software or Licensed Materials or any such mechanism used to
+restrict or control the functionality of any of the foregoing. Neither you nor your Affiliates may use or allow
+
+the transfer, transmission, export or re-export of any Abstract software, products, tools or Components, in
+whole or in part, in violation of any export control laws or regulations administered by the U.S. Commerce
+Department or any other government agency. Neither you nor your Affiliates will use the SDK to run
+applications developed by a third party or that access data, content or resources provided by a third
+party. You may not remove, obscure or alter any proprietary rights notices (including copyright and
+trademark notices) that may be affixed to or contained within the SDK, Licensed Software or Licensed
+Materials.
+1.4 U.S. Government Use. The Licensed Software and Licensed Materials are deemed to be
+“commercial computer software” and “commercial computer documentation”, respectively, pursuant to
+DFAR Section 227.7202 and FAR Section 12.212(b), as applicable; any use, modification, reproduction,
+release, performing, displaying or disclosing of the Licensed Software or Licensed Materials by the U.S.
+Government will be governed solely by the terms of this Agreement and shall be prohibited except to the
+extent expressly permitted by the terms of this Agreement.
+1.5 Open Source and Third Party Software. Certain components of the Licensed Software have been
+licensed under certain open source and third-party license agreements (“Open Source Terms”), and are
+licensed to you accordance with those terms, conditions and restrictions, in addition to the terms of this
+Agreement. You agree to comply with such Open Source Terms and to indemnify and hold Abstract
+harmless from its failure to comply with such Open Source Terms. Unless required by applicable law or
+agreed to in writing, the Licensed Software is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES
+OR CONDITIONS OF ANY KIND, either express or implied.
+1.6 No Abstract Support or Maintenance. Abstract may but is under no obligation to provide updates, fix
+bugs or errors nor to address any other issues you may raise with the quality or performance of any of the
+Licensed Software or Licensed Materials.
+2. OWNERSHIP; RESERVATION OF RIGHTS
+2.1 No Other Licenses. Except as expressly provided in Section 1.2, Abstract does not grant to you any
+right or license, express or implied, in the Licensed Software or Licensed Materials, in whole or in part, or
+to any other Abstract software or any intellectual property or proprietary rights, including but not limited to
+copyright rights (including rights in audiovisual works), moral rights, trademarks (including logos, slogans,
+trade names, service marks), patent rights (including patent applications and disclosures), know-how,
+inventions, rights of priority, and trade secret rights, recognized in any country or jurisdiction in the world
+(collectively, “Intellectual Property Rights”), and Abstract reserves all rights in the foregoing. Nothing in
+this Agreement gives you a right to use any of Abstract’s trade names, trademarks, service marks, logos,
+domain names or other distinctive brand features.
+2.2 Ownership. You understand and agree that Abstract owns and retains all right, title and interest in
+and to the Licensed Software and Licensed Materials, including without limitation all Intellectual Property
+Rights therein or thereto. Nothing in this Agreement will impair Abstract’s right to develop, acquire,
+license, market, promote or distribute products, software or technologies that perform the same or similar
+functions as, or otherwise compete with, any other products, software or technologies that you may
+develop, produce, market or distribute. Abstract will be free to use any information or suggestions you
+provide to Abstract pursuant to this Agreement for any purpose.
+3. COMPENSATION
+3.1 Fees. In consideration of the rights and privileges granted hereunder, you will pay Abstract all
+licensee fee(s) applicable to your use of the SDK, Licensed Software and Licensed Materials under this
+Agreement (“License Fees”). Before downloading the SDK, you will have an opportunity to review and
+
+accept the fees that will be charged. All fees are in U.S. dollars and are non-refundable. Abstract may
+change the License Fees for future Subscription Terms on a going-forward basis by sending notice to the
+email address associated with your account at least fifteen (15) days before the beginning of the billing
+cycle in which such change will take effect. Abstract will make reasonable efforts to keep pricing
+information published on the website up to date.
+3.2 Authorization. You authorize Abstract to charge all License Fees to the payment method specified in
+your account. If you pay any fees with a credit card, Abstract or its payment processor may seek pre-
+authorization of the credit card account prior to your purchase to verify that the credit card is valid and
+has the necessary funds or credit available to cover your purchase.
+3.3 Usage Limitations. You acknowledge and agree that the License Fees are based on the Subscription
+Term specified at checkout. Abstract reserves the right to de-activate the Licensed Software or use other
+technological mechanisms to enforce the usage limitations set forth in this Agreement in its sole
+discretion, with or without notice to you. Calculation of any usage-based License Fees will be solely
+based on Abstract’s measurements of your use of the Licensed Software, unless otherwise agreed to in
+writing. To the fullest extent permitted by law, refunds (if any) are at the discretion of Abstract.
+
+4. DISCLAIMER
+THE SDK, LICENSED SOFTWARE, AND LICENSED MATERIALS ARE PROVIDED ON AN “AS IS”
+AND “AS AVAILABLE” BASIS. ABSTRACT MAKES NO REPRESENTATIONS OR WARRANTIES OF
+ANY KIND, EXPRESS, IMPLIED, STATUTORY OR OTHERWISE, REGARDING THE SDK, LICENSED
+SOFTWARE, AND LICENSED MATERIALS AND ABSTRACT SPECIFICALLY DISCLAIMS ANY
+IMPLIED WARRANTIES OF SATISFACTORY QUALITY, MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE OR NONINFRINGEMENT. THE ENTIRE RISK AS TO THE RESULTS AND
+PERFORMANCE OF THE LICENSED SOFTWARE AND LICENSED MATERIALS, OR
+MODIFICATIONS THERETO OR DERIVATIVE WORKS THEREOF, IS ASSUMED BY LICENSEE.
+ABSTRACT DOES NOT WARRANT THAT SDK, LICENSED MATERIALS, OR LICENSED SOFTWARE
+WILL OPERATE UNINTERRUPTED OR ERROR-FREE. ABSTRACT DOES NOT REPRESENT OR
+WARRANT THAT THE OPERATION OF THE SDK OR LICENSED SOFTWARE WILL NOT
+INTERFERE WITH THE APPS OR OTHERWISE IMPACT THE PERFORMANCE OR BATTERY LIFE
+OF ANY OTHER SOFTWARE, APPLICATIONS, OR DEVICES USED THEREWITH, AND ABSTRACT
+WILL NOT BE RESPONSIBLE FOR ANY OF THE FOREGOING OR FOR ANY LOSS OF DATA. THE
+SDK, LICENSED SOFTWARE, AND LICENSED MATERIALS ARE NOT DESIGNED OR INTENDED
+FOR USE IN OR IN CONNECTION WITH APPLICATIONS IN WHICH THE FAILURE OF THE
+PRODUCT OR SOFTWARE COULD CREATE A SITUATION IN WHICH PERSONAL INJURY OR
+DEATH MAY OCCUR. LICENSEE IS NOT GRANTED ANY RIGHTS UNDER THIS AGREEMENT WITH
+RESPECT TO ANY SUCH APPLICATIONS AND ABSTRACT WILL NOT BE LIABLE FOR ANY USE IN
+CONNECTION WITH SUCH APPLICATIONS.
+
+5. INDEMNITIES
+You, at your own expense, will defend, indemnify and hold Abstract harmless, from and against any
+claim, suit or proceeding brought against Abstract by a third party and pay any liabilities, damages and
+costs awarded in any such suit or proceeding arising in connection with (i) the manufacture, use,
+distribution, license, sale or sublicense of the Apps, the Licensed Software, or the Licensed Materials by
+you or on your behalf, including any claims that the Apps (or any portion thereof) infringes any third-party
+Intellectual Property Rights; or (ii) a breach of your obligations under this Agreement. Abstract will
+provide you with: (a) prompt written notice of any such claim, (b) exclusive control over the defense and
+settlement of the indemnified portion of any such claim, and (c) proper and full information and
+
+assistance to settle or defend any such claim. Notwithstanding the foregoing, (1) Abstract will be able to
+appoint its own non-controlling counsel to participate in the defense or settlement of such claim at its
+own expense and you will not enter into any settlement without the consent of Abstract, which will not be
+unreasonably withheld, and (2) Abstract reserve the right, at Abstract’s own expense, to assume the
+exclusive defense and control of any matter otherwise subject to indemnification by you (without limiting
+your indemnification obligations with respect to that matter), and in that case, you agree to cooperate
+with our defense of those matters.
+6. LIMITATION OF LIABILITY
+IN NO EVENT WILL ABSTRACT OR ITS THIRD PARTY LICENSORS BE LIABLE ARISING OUT OF
+OR IN CONNECTION WITH THIS AGREEMENT FOR ANY SPECIAL, CONSEQUENTIAL,
+INCIDENTAL OR INDIRECT DAMAGES (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS
+OF BUSINESS PROFITS, BUSINESS INTERRUPTION, LOSS OF DATA OR BUSINESS
+INFORMATION), HOWEVER CAUSED, ON ANY THEORY OF LIABILITY (INCLUDING NEGLIGENCE),
+AND NOTWITHSTANDING ANY FAILURE OF ESSENTIAL PURPOSE OF ANY LIMITED REMEDY,
+EXCEPT TO THE EXTENT THAT SUCH LIABILITY MAY NOT BE LIMITED OR EXCLUDED BY LAW.
+ABSTRACT’ TOTAL LIABILITY UNDER OR ARISING OUT OF THIS AGREEMENT WILL BE LIMITED
+TO FEES PAID OR OWING BY ABSTRACT UNDER THIS AGREEMENT IN THE SIX MONTHS PRIOR
+TO THE DATE ON WHICH THE CLAIM AROSE.
+
+7. TERM AND TERMINATION
+7.1 Term. This Agreement shall continue in full force and effect unless and until terminated as
+provided herein.
+7.2 Termination. Either party will have the right to terminate this Agreement for any reason or no
+reason by providing notice thereof to the other party, or in your case, terminating your account with
+Abstract.
+7.3 Effect of Termination. Upon the expiration or termination of this Agreement:
+(a) Any outstanding License Fees will become immediately due and payable;
+(b) You will remove the Licensed Software from your internal systems and Abstract may use
+license protection mechanisms in the Licensed Software to block or prevent your systems from
+utilizing the functionality of the Licensed Software;
+(c) Subject to subsection (d) below, all rights granted by each party hereunder to the other will
+terminate.
+(d) Sections 1.3, 2, 4, 5, 6, 7.3 and 9 will survive the expiration or termination of this Agreement
+for any reason.
+
+8. MODIFICATIONS TO THE TERMS
+Abstract may make changes to this Agreement from time to time. If Abstract changes this Agreement in
+any way that materially modifies your rights or obligations, Abstract will give you at least seven (7) days’
+notice before the changes take effect, during which period of time you may reject the changes by
+terminating the Agreement and your account.
+
+9. MISCELLANEOUS
+9.1 Assignment. You may not assign or delegate this Agreement or any of its rights or duties
+hereunder, directly, indirectly, by operation of law or otherwise, without the written consent of Abstract,
+and any such purported assignment or delegation will be void. Abstract may assign this Agreement
+without consent, including in connection with the sale or other transfer of substantially all of its equity or
+assets to which this Agreement relates. Subject to the foregoing, this Agreement will be binding upon
+and inure to the benefit of the parties and their permitted successors and assigns.
+9.2 Waiver and Amendment. Except as set forth in Section 8, no modification, amendment or waiver
+of any provision of this Agreement will be effective unless in writing and signed by the party to be
+charged. No failure or delay by either party in exercising any right, power, or remedy under this
+Agreement will operate as a waiver of any such right, power or remedy.
+9.3 Choice of Law; Jurisdiction, Venue. This Agreement will be governed by the laws of the State of
+Washington, without regard to its provisions on conflicts of law. Each party hereby irrevocably consents
+to the exclusive jurisdiction and venue of the state and federal courts located in Seattle, Washington in
+connection with any dispute hereunder or the enforcement of any right or obligation hereunder. The
+parties agree that the U.N. Convention on Contracts for the International Sale of Goods shall not apply to
+this Agreement.
+9.4 Notices. Any notice required or permitted by this Agreement will be deemed given if delivered by
+registered mail, postage prepaid, addressed to the other party. Delivery will be deemed effective three
+(3) days after deposit with postal authorities. Notices to Abstract should be sent to: Abstract Software,
+Inc., 300 Lenora Street #4096 Seattle, WA 98121. Notice to you will be addressed to the person indicated in connection with the online
+registration completed by you. Each party may change its designated addressee or address by notice to
+the other party, or in your case, by updating the address associated with your account.
+9.5 Independent Contractors. The parties are independent contractors with respect to each other.
+Each party is not and will not be deemed to be an employee, agent, partner, joint venturer, franchisee or
+legal representative of the other for any purpose and will not have any right, power or authority to create
+any obligation or responsibility on behalf of the other.
+9.6 Severability. If any provision of this Agreement will be held by a court of competent jurisdiction
+to be contrary to law, such provision will be changed and interpreted so as to best accomplish the
+objectives of the original provision to the fullest extent allowed by law and the remaining provisions of this
+Agreement will remain in full force and effect.
+9.7 Complete Understanding. This Agreement represents the entire agreement of the parties with
+respect to the subject matter hereof and supersedes all prior or contemporaneous agreements,
+understandings, proposals and representations between or by the parties.
+9.8 Force Majeure. Except with respect to obligations to make payments hereunder, neither party will
+be deemed in default hereunder, nor will it hold the other party responsible for, any cessation, interruption
+or delay in the performance of its obligations hereunder due to causes beyond its reasonable control
+including, but not limited to: earthquake, flood, fire, storm or other natural disaster, pandemic, act of God,
+labor controversy or threat thereof, civil disturbance or commotion, disruption of the public markets, war
+or armed conflict or the inability to obtain sufficient material, supplies, labor, transportation, power or other
+essential commodity or service required in the conduct of its business, including internet access, or any
+change in or the adoption of any law, ordinance, rule, regulation, order, judgment or decree.

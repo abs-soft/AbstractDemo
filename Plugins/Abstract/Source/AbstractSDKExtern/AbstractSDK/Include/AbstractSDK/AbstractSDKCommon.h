@@ -1,0 +1,406 @@
+// Copyright 2023 Abstract Software, Inc.
+
+#pragma once
+
+#include <array>
+#include <functional>
+#include <string>
+#include <tuple>
+#include <type_traits>
+#include <limits>
+#include <iostream>
+#include <limits.h>
+
+namespace AbstractSDK
+{
+    typedef std::size_t AbsKey;
+    typedef std::size_t AbsIndex;
+    typedef int(_stdcall* AbsFunc)();
+
+    template<typename T>
+    constexpr T None = {};
+    template<> constexpr std::size_t None<std::size_t> = ULONG_MAX;
+
+    template<typename T>
+    AbsKey AbsValueTypeKey() { return None<AbsKey>; };
+
+    template<typename ReturnT, typename ... Args>
+    struct AbsFuncT { typedef ReturnT(*inT)(Args ...); AbsFuncT() : in(nullptr) {} inT in; };
+
+    template<std::size_t TypeSize>
+    struct AbsBlindType { static constexpr std::size_t Size = TypeSize; std::byte data[Size]; };
+}
+
+#if defined ABSTRACT_SDK_DLLEXPORT
+#define ABSTRACT_SDK_API __declspec(dllexport)
+#else
+#define ABSTRACT_SDK_API __declspec(dllimport)
+#endif
+
+#if defined ABSTRACT_IMPORT
+#define ABSTRACT_SDK_EXPORT __declspec(dllimport)
+#else
+#define ABSTRACT_SDK_EXPORT __declspec(dllexport)
+#endif
+
+#define ABSTRACT_SDK_EXPAND(x) x
+
+#define ABSTRACT_SDK_ARG_N( \
+     _1,  _2,  _3,  _4,  _5,  _6,  _7,  _8, \
+     _9, _10, _11, _12, _13, _14, _15, _16, \
+    _17, _18, _19, _20, _21, _22, _23, _24, \
+    _25, _26, _27, _28, _29, _30, _31, _32, \
+    _33, _34, _35, _36, _37, _38, _39, _40, \
+    _41, _42, _43, _44, _45, _46, _47, _48, \
+    _49, _50, _51, _52, _53, _54, _55, _56, \
+    _57, _58, _59, _60, _61, _62, _63, N, ...) N
+
+#define ABSTRACT_SDK_RSEQ_N() \
+     63, 62, 61, 60, 59, 58, 57, 56, \
+     55, 54, 53, 52, 51, 50, 49, 48, \
+     47, 46, 45, 44, 43, 42, 41, 40, \
+     39, 38, 37, 36, 35, 34, 33, 32, \
+     31, 30, 29, 28, 27, 26, 25, 24, \
+     23, 22, 21, 20, 19, 18, 17, 16, \
+     15, 14, 13, 12, 11, 10,  9,  8, \
+      7,  6,  5,  4,  3,  2,  1,  0
+
+#define ABSTRACT_SDK_NARG_(...) ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_ARG_N(__VA_ARGS__))
+
+#define ABSTRACT_SDK_COMMASEQ_N() \
+      1,  1,  1,  1,  1,  1,  1,  1, \
+      1,  1,  1,  1,  1,  1,  1,  1, \
+      1,  1,  1,  1,  1,  1,  1,  1, \
+      1,  1,  1,  1,  1,  1,  1,  1, \
+      1,  1,  1,  1,  1,  1,  1,  1, \
+      1,  1,  1,  1,  1,  1,  1,  1, \
+      1,  1,  1,  1,  1,  1,  1,  1, \
+      1,  1,  1,  1,  1,  1,  0,  0
+
+#define ABSTRACT_SDK_COMMA(...) ,
+#define ABSTRACT_SDK_HASCOMMA(...) ABSTRACT_SDK_NARG_(__VA_ARGS__, ABSTRACT_SDK_COMMASEQ_N())
+
+#define ABSTRACT_SDK_COUNT(...) \
+	ABSTRACT_SDK_NARG_HELPER1( \
+		ABSTRACT_SDK_HASCOMMA(__VA_ARGS__), \
+		ABSTRACT_SDK_HASCOMMA(ABSTRACT_SDK_COMMA __VA_ARGS__ ()), \
+		ABSTRACT_SDK_NARG_(__VA_ARGS__, ABSTRACT_SDK_RSEQ_N()))
+
+#define ABSTRACT_SDK_NARG_HELPER1(a, b, N) ABSTRACT_SDK_NARG_HELPER2(a, b, N)
+#define ABSTRACT_SDK_NARG_HELPER2(a, b, N) ABSTRACT_SDK_NARG_HELPER3_##a##b(N)
+#define ABSTRACT_SDK_NARG_HELPER3_01(N) 0
+#define ABSTRACT_SDK_NARG_HELPER3_00(N) 1
+#define ABSTRACT_SDK_NARG_HELPER3_11(N) N
+
+#define ABSTRACT_SDK_FIRST_ARG(first, ...) first
+#define ABSTRACT_SDK_REST_ARGS(first, ...) __VA_ARGS__
+
+#define ABSTRACT_SDK_JOIN(op, list) ABSTRACT_SDK_JOIN_(ABSTRACT_SDK_COUNT list, op, list)
+#define ABSTRACT_SDK_JOIN_(num, op, list) ABSTRACT_SDK_JOIN__(num, op, list)
+#define ABSTRACT_SDK_JOIN__(num, op, list) ABSTRACT_SDK_JOIN_##num(op, list)
+#define ABSTRACT_SDK_JOIN_1(op, list) ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list)
+#define ABSTRACT_SDK_JOIN_2(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_1(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_3(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_2(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_4(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_3(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_5(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_4(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_6(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_5(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_7(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_6(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_8(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_7(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_9(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_8(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_10(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_9(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_11(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_10(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_12(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_11(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_13(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_12(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_14(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_13(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_15(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_14(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_16(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_15(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_17(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_16(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_18(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_17(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_19(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_18(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_20(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_19(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_21(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_20(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_22(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_21(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_23(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_22(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_24(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_23(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_25(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_24(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_26(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_25(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_27(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_26(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_28(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_27(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_29(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_28(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_30(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_29(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_31(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_30(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_32(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_31(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_33(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_32(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_34(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_33(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_35(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_34(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_36(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_35(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_37(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_36(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_38(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_37(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_39(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_38(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_40(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_39(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_41(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_40(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_42(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_41(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_43(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_42(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_44(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_43(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_45(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_44(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_46(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_45(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_47(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_46(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_48(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_47(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_49(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_48(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_50(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_49(op, (ABSTRACT_SDK_REST_ARGS list))))
+#define ABSTRACT_SDK_JOIN_51(op, list) op(ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_FIRST_ARG list), ABSTRACT_SDK_EXPAND(ABSTRACT_SDK_JOIN_50(op, (ABSTRACT_SDK_REST_ARGS list))))
+
+#define ABSTRACT_SDK_PRIMITIVE_CAT(x, y) x ## y
+#define ABSTRACT_SDK_CAT(x, y) ABSTRACT_SDK_PRIMITIVE_CAT(x, y)
+
+#define ABSTRACT_SDK_CLASS_DECLARATION(className) class className; typedef className* className##Ptr; class ABSTRACT_SDK_EXPORT className : public AbstractSDK::AbsClass
+#define ABSTRACT_SDK_CLASS_LABEL(classLabel) static inline AbstractSDK::AbsKey ABS_CLASS_KEY() { return AbstractSDK::AbsStringParam(classLabel).ToKey(); }
+#define ABSTRACT_SDK_EVENT_DECLARATION(...)
+#define ABSTRACT_SDK_DATA_BINDING(...)
+
+#define ABSTRACT_SDK_STRUCT_DECLARATION(structName) struct structName; typedef structName* structName##Ptr; struct structName
+#define ABSTRACT_SDK_STRUCT_ENTRY(...)
+
+#define ABSTRACT_SDK_LOAD_CLASS(sourceLib, definitionName) \
+    static_assert(std::is_same<decltype(sourceLib), const AbstractSDK::AbsLibrary&>::value, "The first input of ABSTRACT_SDK_LOAD_CLASS(...) must be a const reference to AbsLibrary (i.e. const AbsLibrary&)."); \
+    static_assert(std::is_same<decltype(definitionName), AbstractSDK::AbsStringParam>::value, "The second input of ABSTRACT_SDK_LOAD_CLASS(...) must be an instance of AbsStringParam (i.e. string_view)."); \
+    Load(sourceLib, ABS_CLASS_KEY(), definitionName.ToKey());
+// #define ABSTRACT_SDK_EVENT_IMPLEMENTATION(funcIdentifier, returnType, ...) \
+//     returnType funcIdentifier(__VA_ARGS__) \
+//     { \
+//         return Invoke<decltype(*this), returnType, __VA_ARGS__>(AbstractSDK::AbsStringParam(__func__).ToKey(), *this, __VA_ARGS__); \
+//     }
+
+#define ABSTRACT_SDK_NODE_DEFINITION(...) ABSTRACT_SDK_EXPORT
+#define ABSTRACT_SDK_NODE_DEFINITION_INLINE(...) inline
+
+#define ABS_SDK_PARAM(type, name) type
+#define ABS_SDK_OUTPUT_PARAM(type, name) type&
+#define ABS_SDK_PROPERTIES(...)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_0(properties, name, returnType, ...) \
+    typedef AbstractSDK::AbsFuncT<returnType> absft__##name##_##returnType##_A57BE9699D694D84AE166AC624002F40_; \
+    ABSTRACT_SDK_EXPORT absft__##name##_##returnType##_A57BE9699D694D84AE166AC624002F40_& absndeget__##name##_##returnType##_A57BE9699D694D84AE166AC624002F40_();
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_1(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_2(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_3(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_4(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_5(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_6(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_7(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_8(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_9(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_10(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_11(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_12(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_13(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_14(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_15(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_16(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_17(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_18(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_19(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_20(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_21(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_22(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_23(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_24(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_25(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_26(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_27(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_28(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_29(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_30(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_31(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_32(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_33(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_34(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_35(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_36(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_37(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_38(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_39(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_40(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_41(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_42(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_43(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_44(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_45(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_46(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_47(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_48(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_49(properties, name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, __VA_ARGS__)
+
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_N(properties, name, returnType, ...) \
+    typedef AbstractSDK::AbsFuncT<returnType, __VA_ARGS__> ABSTRACT_SDK_CAT(absft__##name##_##returnType##_A57BE9699D694D84AE166AC624002F40_, ABSTRACT_SDK_JOIN(ABSTRACT_SDK_CAT, (__VA_ARGS__))); \
+    ABSTRACT_SDK_EXPORT ABSTRACT_SDK_CAT(absft__##name##_##returnType##_A57BE9699D694D84AE166AC624002F40_, ABSTRACT_SDK_JOIN(ABSTRACT_SDK_CAT, (__VA_ARGS__)))& ABSTRACT_SDK_CAT(absndeget__##name##_##returnType##_A57BE9699D694D84AE166AC624002F40_, ABSTRACT_SDK_JOIN(ABSTRACT_SDK_CAT, (__VA_ARGS__)))();
+#define ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE(properties, name, returnType, ...) ABSTRACT_SDK_CAT(_ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE_, ABSTRACT_SDK_COUNT(__VA_ARGS__))(properties, name, returnType, __VA_ARGS__)
+
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_0(name, returnType, ...) \
+    static absft__##name##_##returnType##_A57BE9699D694D84AE166AC624002F40_ absf__##name##_##returnType##_A57BE9699D694D84AE166AC624002F40_ = {}; \
+    absft__##name##_##returnType##_A57BE9699D694D84AE166AC624002F40_& absndeget__##name##_##returnType##_A57BE9699D694D84AE166AC624002F40_() \
+    { \
+        return absf__##name##_##returnType##_A57BE9699D694D84AE166AC624002F40_; \
+    }
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_1(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_2(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_3(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_4(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_5(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_6(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_7(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_8(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_9(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_10(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_11(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_12(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_13(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_14(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_15(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_16(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_17(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_18(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_19(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_20(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_21(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_22(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_23(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_24(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_25(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_26(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_27(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_28(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_29(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_30(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_31(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_32(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_33(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_34(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_35(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_36(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_37(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_38(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_39(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_40(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_41(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_42(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_43(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_44(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_45(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_46(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_47(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_48(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_49(name, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, __VA_ARGS__)
+
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_N(name, returnType, ...) \
+    static ABSTRACT_SDK_CAT(absft__##name##_##returnType##_A57BE9699D694D84AE166AC624002F40_, ABSTRACT_SDK_JOIN(ABSTRACT_SDK_CAT, (__VA_ARGS__))) ABSTRACT_SDK_CAT(absf__##name##_##returnType##_A57BE9699D694D84AE166AC624002F40_, ABSTRACT_SDK_JOIN(ABSTRACT_SDK_CAT, (__VA_ARGS__))) = {}; \
+    ABSTRACT_SDK_CAT(absft__##name##_##returnType##_A57BE9699D694D84AE166AC624002F40_, ABSTRACT_SDK_JOIN(ABSTRACT_SDK_CAT, (__VA_ARGS__)))& ABSTRACT_SDK_CAT(absndeget__##name##_##returnType##_A57BE9699D694D84AE166AC624002F40_, ABSTRACT_SDK_JOIN(ABSTRACT_SDK_CAT, (__VA_ARGS__)))() \
+    { \
+        return ABSTRACT_SDK_CAT(absf__##name##_##returnType##_A57BE9699D694D84AE166AC624002F40_, ABSTRACT_SDK_JOIN(ABSTRACT_SDK_CAT, (__VA_ARGS__))); \
+    }
+#define ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP(name, returnType, ...) ABSTRACT_SDK_CAT(_ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP_, ABSTRACT_SDK_COUNT(__VA_ARGS__))(name, returnType, __VA_ARGS__)
+
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_0(name, definition, returnType, ...) \
+    absndeget__##name##_##returnType##_A57BE9699D694D84AE166AC624002F40_().in = definition;
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_1(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_2(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_3(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_4(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_5(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_6(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_7(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_8(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_9(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_10(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_11(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_12(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_13(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_14(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_15(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_16(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_17(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_18(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_19(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_20(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_21(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_22(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_23(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_24(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_25(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_26(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_27(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_28(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_29(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_30(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_31(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_32(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_33(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_34(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_35(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_36(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_37(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_38(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_39(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_40(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_41(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_42(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_43(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_44(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_45(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_46(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_47(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_48(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_49(name, definition, returnType, ...) _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, __VA_ARGS__)
+
+#define _ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_N(name, definition, returnType, ...) \
+    ABSTRACT_SDK_CAT(absndeget__##name##_##returnType##_A57BE9699D694D84AE166AC624002F40_, ABSTRACT_SDK_JOIN(ABSTRACT_SDK_CAT, (__VA_ARGS__)))().in = definition;
+#define ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE(name, definition, returnType, ...) ABSTRACT_SDK_CAT(_ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE_, ABSTRACT_SDK_COUNT(__VA_ARGS__))(name, definition, returnType, __VA_ARGS__)
+
+#define ABSTRACT_SDK_VALUE_TYPE_DECLARE(name, nativeType) \
+    typedef nativeType name; \
+    typedef name& __REF__##name; \
+    typedef name& __INREF__##name; \
+    typedef const name& __CREF__##name; \
+    static_assert(std::is_same<nativeType, void>::value || std::is_default_constructible<nativeType>::value, "Abstract accessible value types must be default constructible.");
+#define ABSTRACT_SDK_VALUE_TYPE_DEFINITION(properties, name, nativeType) \
+    ABSTRACT_SDK_VALUE_TYPE_DECLARE(name, nativeType) \
+    namespace AbstractSDK { template<> inline AbsKey AbsValueTypeKey<name>() { return AbstractSDK::AbsStringParam(#name).ToKey(); } }
+#define ABSTRACT_SDK_VALUE_TYPE_DEFINITION_EXTERN(properties, name, nativeType) \
+    static_assert(std::is_pointer<nativeType>::value, "Extern value type definition must be a pointer type of a forward declared class/struct type."); \
+    ABSTRACT_SDK_VALUE_TYPE_DEFINITION(properties, name, nativeType); \
+    typedef nativeType& __REF__##name; \
+    typedef const nativeType __CONST__##name;
+#define ABSTRACT_SDK_VALUE_TYPE_DEFINITION_SIZED_EXTERN(properties, name, size) \
+    struct BlindType##name \
+    { \
+        typedef AbstractSDK::AbsBlindType<size> InternalT; \
+        InternalT in; \
+        template<typename T, typename ... Args> static BlindType##name ConstructInPlace(Args&& ... args) { BlindType##name result; new (&result) T(std::forward<Args>(args)...); return result; } \
+        template<typename T> static BlindType##name& Convert(T& data) { return *reinterpret_cast<BlindType##name*>(&data); } \
+        template<typename T> static const BlindType##name& ConvertConst(const T& data) { return *reinterpret_cast<const BlindType##name*>(&data); } \
+        template<typename T> T& Get() { return *reinterpret_cast<T*>(in.data); } \
+        template<typename T> const T& GetConst() const { return *reinterpret_cast<const T*>(in.data); } \
+    }; \
+    ABSTRACT_SDK_VALUE_TYPE_DEFINITION(properties, name, BlindType##name);
+
+#define ABSTRACT_SDK_VALUE_TYPE_SUPPORT_EXECUTION(type) \
+    typedef void type; \
+    static_assert(std::is_void<type>::value, "Execution type must be a void type");
+#define ABSTRACT_SDK_VALUE_TYPE_SUPPORT_INTEGER_EDITOR(type) static_assert(std::is_convertible<type, int32_t>::value && std::is_convertible<int32_t, type>::value, "Invalid type for integer editor");
+#define ABSTRACT_SDK_VALUE_TYPE_SUPPORT_NUMBER_EDITOR(type) static_assert(std::is_convertible<type, float>::value && std::is_convertible<float, type>::value, "Invalid type for integer editor");
+#define ABSTRACT_SDK_VALUE_TYPE_SUPPORT_BOOLEAN_EDITOR(type) static_assert(std::is_convertible<type, bool>::value && std::is_convertible<bool, type>::value, "Invalid type for integer editor");
+#define ABSTRACT_SDK_VALUE_TYPE_SUPPORT_STRING_EDITOR(type) static_assert(std::is_convertible<type, const char*>::value && std::is_convertible<const char*, type>::value, "Invalid type for integer editor");
+#define ABSTRACT_SDK_VALUE_TYPE_CONVERSION_RULE(fromType, toType) static_assert(std::is_convertible<fromType, toType>::value, "Invalid conversion rule.");
+#define ABSTRACT_SDK_VALUE_TYPE_CONVERSION_RULE_EXTERN(fromType, toType) static_assert(std::is_pointer<fromType>::value && std::is_pointer<toType>::value, "Extern conversion rules only allow pointer-based types");
+
+#define ABSTRACT_SDK_ENUM(properties, name) enum class name {
+#define _____ABSTRACT_SDK_ENUM_ENTRY_1(label) _##label,
+#define _____ABSTRACT_SDK_ENUM_ENTRY_2(label, value) _##label = value,
+#define _____ABSTRACT_SDK_ENUM_ENTRY_overload(_1, _2, NAME, ...) NAME
+#define ABSTRACT_SDK_ENUM_ENTRY(...) ABSTRACT_SDK_EXPAND(_____ABSTRACT_SDK_ENUM_ENTRY_overload(__VA_ARGS__, _____ABSTRACT_SDK_ENUM_ENTRY_2, _____ABSTRACT_SDK_ENUM_ENTRY_1)(__VA_ARGS__))
+#define ABSTRACT_SDK_ENUM_END() };
+
+
+
+// TODO: Should add ABS_CLASS(), ABS_TYPE(), ABS_ENUM(), etc to make the naming more secure
+// TODO: Throw error if the core value types are defined to be other values
+// TODO: Enum shouldn't be allowed to use other editors. maybe prevent conversion rules as well

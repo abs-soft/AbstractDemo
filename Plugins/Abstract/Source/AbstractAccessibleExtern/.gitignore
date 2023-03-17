@@ -1,0 +1,9 @@
+x64/*
+Source/.vs/*
+Source/x64/*
+Source/UEAllHeader.h
+Source/Generated.props
+Source/Generated/*
+Source/PropertyTypes.txt
+Source/GeneratorLog.txt
+!/Source/AbstractAccessible.sln

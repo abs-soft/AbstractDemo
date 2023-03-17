@@ -1,0 +1,1391 @@
+#buildtarget:nodegraph
+#text:
+
+Class[
+    Type:"Actor Component",
+    Vars:{
+        [t:UEClass, n:"kamikazi_explosion"]
+    }]
+{
+    Event[Name:"Tick"]
+    {
+        if (Less_DoubleDouble(
+            (
+                Subtract_VectorVector(
+                    K2_GetActorLocation(
+                        GetPlayerPawn(
+                            in[n:"OwnerActor"](),
+                            0)),
+                    K2_GetActorLocation(
+                        in[n:"OwnerActor"]()))),
+            300.0))
+        {
+            SpawnActorFromUEClassType(
+                in[n:"OwnerActor"](),
+                cv[t:UEClass, n:"kamikazi_explosion"](self),
+                K2_GetActorLocation(
+                    in[n:"OwnerActor"]()));
+            K2_DestroyActor(
+                in[n:"OwnerActor"]());
+        }
+    }
+
+    Event[Name:"On Begin Overlap"]
+    {
+        if (ActorHasTag(
+            in[n:"OtherActor"](),
+            MakeName(
+                "player_projectile")))
+        {
+            SpawnActorFromUEClassType(
+                in[n:"OwnerActor"](),
+                cv[t:UEClass, n:"kamikazi_explosion"](self),
+                K2_GetActorLocation(
+                    in[n:"OwnerActor"]()));
+            K2_DestroyActor(
+                in[n:"OwnerActor"]());
+        }
+    }
+
+
+}
+
+
+#nodegraph:
+{
+  "Meta": {
+    "VariantType": "ClassDefinition",
+    "ClassName": "Actor Component",
+    "ClassVariables": [
+      {
+        "Label": "kamikazi_explosion",
+        "ValueType": "UE Class Type"
+      }
+    ]
+  },
+  "Nodes": [
+    {
+      "Identifier": "f3c3f551-7da3-479a-95e7-fa7acebc41b2",
+      "DefinitionNamespacedLabel": "EventBinding_",
+      "Properties": [
+        {
+          "Label": "Event Name",
+          "EditorData": {
+            "VariantType": "ClassEventName",
+            "Value": "Tick"
+          }
+        }
+      ],
+      "InPins": [],
+      "OutPin": null,
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": null,
+      "UnconditionalExecutionOutPin": {
+        "Identifier": "e21969e6-f946-4c7d-9fe9-dfa0c6af41a7",
+        "Label": "",
+        "Conditional": false
+      },
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "Color": "#FF660900"
+    },
+    {
+      "Identifier": "e0e2c5ad-19c4-475c-af23-30998f011c72",
+      "DefinitionNamespacedLabel": "Branch_vtECB05D148E874058B1DE125D357137C3",
+      "Properties": [],
+      "InPins": [
+        {
+          "Identifier": "6798df93-1423-4f66-846a-3aa621717e41",
+          "Label": "Condition",
+          "ValueTypeNamespacedLabel": "vtECB05D148E874058B1DE125D357137C3",
+          "Qualifier": 0,
+          "EditorData": {
+            "VariantType": "Boolean",
+            "Value": false
+          },
+          "NativeParamIndex": -1
+        }
+      ],
+      "OutPin": null,
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": {
+        "Identifier": "2672d1b1-8a4a-4409-8883-b45e374d2d4f",
+        "Label": "",
+        "Conditional": false
+      },
+      "UnconditionalExecutionOutPin": {
+        "Identifier": "98d484ae-28fa-4fb8-b279-145091d67200",
+        "Label": "",
+        "Conditional": false
+      },
+      "ConditionalExecutionOutPins": [
+        {
+          "Identifier": "521209ec-311d-47d6-9f0d-7d2e18dd40c2",
+          "Label": "OnTrue",
+          "Conditional": true
+        },
+        {
+          "Identifier": "edb7110f-ae71-44f7-a52e-b40ca61d2e8f",
+          "Label": "OnFalse",
+          "Conditional": true
+        }
+      ],
+      "Extensions": [],
+      "Position": {
+        "X": 2100.0,
+        "Y": 0.0
+      },
+      "Color": "#FF7A6000"
+    },
+    {
+      "Identifier": "785818d7-43d8-4047-a232-bf1e3daad2e7",
+      "DefinitionNamespacedLabel": "GetPlayerPawn_AAAPawn__CONST__AAUObjectAABInt32",
+      "Properties": [],
+      "InPins": [
+        {
+          "Identifier": "f5846dea-d550-4aab-a5d4-3d0b2562b3a1",
+          "Label": "WorldContextObject",
+          "ValueTypeNamespacedLabel": "AAUObject",
+          "Qualifier": 1,
+          "EditorData": null,
+          "NativeParamIndex": 0
+        },
+        {
+          "Identifier": "cb48ffce-eedd-4219-ac3d-d4a74ae2ed00",
+          "Label": "PlayerIndex",
+          "ValueTypeNamespacedLabel": "AABInt32",
+          "Qualifier": 0,
+          "EditorData": {
+            "VariantType": "Integer",
+            "Value": "0"
+          },
+          "NativeParamIndex": 1
+        }
+      ],
+      "OutPin": {
+        "Identifier": "dc7a9704-d56b-4ae2-afaa-165400bfa64e",
+        "Label": "Result",
+        "ValueTypeNamespacedLabel": "AAAPawn",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": {
+        "Identifier": "fae67eaa-c8a6-4e5b-852d-5bc1bb6eea9d",
+        "Label": "",
+        "Conditional": false
+      },
+      "UnconditionalExecutionOutPin": {
+        "Identifier": "83dc8d83-ea97-41d5-80e2-3a8ef65cea81",
+        "Label": "",
+        "Conditional": false
+      },
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 600.0,
+        "Y": 110.0
+      },
+      "Color": "#FF007A74"
+    },
+    {
+      "Identifier": "9de11819-e668-4c49-984e-4d9d1858edb5",
+      "DefinitionNamespacedLabel": "Input_vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+      "Properties": [
+        {
+          "Label": "Name",
+          "EditorData": {
+            "VariantType": "RawString",
+            "Value": "OwnerActor"
+          }
+        }
+      ],
+      "InPins": [],
+      "OutPin": {
+        "Identifier": "392d2080-3ac7-4014-8268-6de54a400f1c",
+        "Label": "Value",
+        "ValueTypeNamespacedLabel": "vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": null,
+      "UnconditionalExecutionOutPin": null,
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 300.0,
+        "Y": 110.0
+      },
+      "Color": "#FF000000"
+    },
+    {
+      "Identifier": "12bbb4aa-9014-4afd-aecb-ae78c399bc11",
+      "DefinitionNamespacedLabel": "K2_GetActorLocation_AAFVectorAAAActor",
+      "Properties": [],
+      "InPins": [
+        {
+          "Identifier": "5d4aec16-8b78-4c3e-8df6-326c6face21d",
+          "Label": "Target",
+          "ValueTypeNamespacedLabel": "AAAActor",
+          "Qualifier": 0,
+          "EditorData": null,
+          "NativeParamIndex": 0
+        }
+      ],
+      "OutPin": {
+        "Identifier": "924d2495-f7b2-465c-8364-d2c94e69e106",
+        "Label": "Result",
+        "ValueTypeNamespacedLabel": "AAFVector",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": {
+        "Identifier": "0d1038a7-c9b0-4c21-8867-6a528f64014b",
+        "Label": "",
+        "Conditional": false
+      },
+      "UnconditionalExecutionOutPin": {
+        "Identifier": "64358af2-4b1e-4f11-a05f-258ead4c5f40",
+        "Label": "",
+        "Conditional": false
+      },
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 900.0,
+        "Y": 110.0
+      },
+      "Color": "#FF007A74"
+    },
+    {
+      "Identifier": "648d3ebb-c608-460f-a549-dcbbf1e6fac1",
+      "DefinitionNamespacedLabel": "K2_GetActorLocation_AAFVectorAAAActor",
+      "Properties": [],
+      "InPins": [
+        {
+          "Identifier": "5ce22c46-7966-4e5c-882b-09b810cbd3b0",
+          "Label": "Target",
+          "ValueTypeNamespacedLabel": "AAAActor",
+          "Qualifier": 0,
+          "EditorData": null,
+          "NativeParamIndex": 0
+        }
+      ],
+      "OutPin": {
+        "Identifier": "69666cbb-1a54-4259-839e-74e62d3c1b42",
+        "Label": "Result",
+        "ValueTypeNamespacedLabel": "AAFVector",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": {
+        "Identifier": "dbe63439-497a-40e2-819a-005ed2694521",
+        "Label": "",
+        "Conditional": false
+      },
+      "UnconditionalExecutionOutPin": {
+        "Identifier": "4a3aadb4-8f71-4abc-b833-93fe0127f2af",
+        "Label": "",
+        "Conditional": false
+      },
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 900.0,
+        "Y": 381.96
+      },
+      "Color": "#FF007A74"
+    },
+    {
+      "Identifier": "1e6bbf92-2d98-452b-b7b9-3a9b8e275017",
+      "DefinitionNamespacedLabel": "Input_vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+      "Properties": [
+        {
+          "Label": "Name",
+          "EditorData": {
+            "VariantType": "RawString",
+            "Value": "OwnerActor"
+          }
+        }
+      ],
+      "InPins": [],
+      "OutPin": {
+        "Identifier": "49785849-dab1-4746-86ab-0b1a4046bcd6",
+        "Label": "Value",
+        "ValueTypeNamespacedLabel": "vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": null,
+      "UnconditionalExecutionOutPin": null,
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 600.0,
+        "Y": 381.96
+      },
+      "Color": "#FF000000"
+    },
+    {
+      "Identifier": "85a71f10-53b2-4b42-90cb-a4613d989014",
+      "DefinitionNamespacedLabel": "Subtract_VectorVector_AAFVectorAAFVectorAAFVector",
+      "Properties": [],
+      "InPins": [
+        {
+          "Identifier": "89abfe30-41ec-4982-8345-23cafc5782fe",
+          "Label": "A",
+          "ValueTypeNamespacedLabel": "AAFVector",
+          "Qualifier": 0,
+          "EditorData": null,
+          "NativeParamIndex": 0
+        },
+        {
+          "Identifier": "21e3649b-d761-4141-94b1-422fc861ff37",
+          "Label": "B",
+          "ValueTypeNamespacedLabel": "AAFVector",
+          "Qualifier": 0,
+          "EditorData": null,
+          "NativeParamIndex": 1
+        }
+      ],
+      "OutPin": {
+        "Identifier": "89256732-59e6-4e41-92a9-06c1da563c0a",
+        "Label": "Result",
+        "ValueTypeNamespacedLabel": "AAFVector",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": {
+        "Identifier": "2432e332-aa17-4e85-942b-3664e7d5ec59",
+        "Label": "",
+        "Conditional": false
+      },
+      "UnconditionalExecutionOutPin": {
+        "Identifier": "2b8b6b6a-a1fa-472f-8f93-7eec35e14429",
+        "Label": "",
+        "Conditional": false
+      },
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 1200.0,
+        "Y": 110.0
+      },
+      "Color": "#FF007A74"
+    },
+    {
+      "Identifier": "58fa09fe-84d5-43bd-ad67-adbd78c8ca7c",
+      "DefinitionNamespacedLabel": "Length_AABDouble__CREF__AAFVector",
+      "Properties": [],
+      "InPins": [
+        {
+          "Identifier": "db5f3af7-ace1-44a1-9f5f-9f73e3dbe1a9",
+          "Label": "target",
+          "ValueTypeNamespacedLabel": "AAFVector",
+          "Qualifier": 3,
+          "EditorData": null,
+          "NativeParamIndex": 0
+        }
+      ],
+      "OutPin": {
+        "Identifier": "ee8740b2-1102-4b46-bc70-8996d17bcf75",
+        "Label": "Result",
+        "ValueTypeNamespacedLabel": "AABDouble",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": null,
+      "UnconditionalExecutionOutPin": null,
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 1500.0,
+        "Y": 110.0
+      },
+      "Color": "#FF2D5C1F"
+    },
+    {
+      "Identifier": "1c1c84c3-689e-47a5-a233-0a9735b15f17",
+      "DefinitionNamespacedLabel": "Less_DoubleDouble_AABBoolAABDoubleAABDouble",
+      "Properties": [],
+      "InPins": [
+        {
+          "Identifier": "b40f1eaf-36cc-4528-8cc9-b6664e61eb1a",
+          "Label": "A",
+          "ValueTypeNamespacedLabel": "AABDouble",
+          "Qualifier": 0,
+          "EditorData": {
+            "VariantType": "Number",
+            "Value": null
+          },
+          "NativeParamIndex": 0
+        },
+        {
+          "Identifier": "0e7c7beb-995c-4bbf-9993-92fb02261a23",
+          "Label": "B",
+          "ValueTypeNamespacedLabel": "AABDouble",
+          "Qualifier": 0,
+          "EditorData": {
+            "VariantType": "Number",
+            "Value": "300"
+          },
+          "NativeParamIndex": 1
+        }
+      ],
+      "OutPin": {
+        "Identifier": "934f80c4-8648-4142-b8b3-3253d5afd319",
+        "Label": "Result",
+        "ValueTypeNamespacedLabel": "AABBool",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": {
+        "Identifier": "be51b260-97e5-4236-bb18-393ded32a8ed",
+        "Label": "",
+        "Conditional": false
+      },
+      "UnconditionalExecutionOutPin": {
+        "Identifier": "0d984ded-8b29-4f9e-a83c-c35f311d911c",
+        "Label": "",
+        "Conditional": false
+      },
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 1800.0,
+        "Y": 110.0
+      },
+      "Color": "#FF007A74"
+    },
+    {
+      "Identifier": "cf7df322-40e4-4b20-b0c3-7cfa6f10dd79",
+      "DefinitionNamespacedLabel": "K2_DestroyActor_ExecutionAAAActor",
+      "Properties": [],
+      "InPins": [
+        {
+          "Identifier": "bba23b38-f0a7-46e3-9d04-3a4f403a4ef6",
+          "Label": "Target",
+          "ValueTypeNamespacedLabel": "AAAActor",
+          "Qualifier": 0,
+          "EditorData": null,
+          "NativeParamIndex": 0
+        }
+      ],
+      "OutPin": null,
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": {
+        "Identifier": "76f054d9-9dad-4bce-b233-77673479c467",
+        "Label": "",
+        "Conditional": false
+      },
+      "UnconditionalExecutionOutPin": {
+        "Identifier": "574b45a4-3255-4979-b2c8-19fe566984e6",
+        "Label": "",
+        "Conditional": false
+      },
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 3657.793333333333,
+        "Y": 110.0
+      },
+      "Color": "#FF007A74"
+    },
+    {
+      "Identifier": "337c7559-7b49-4cfd-8418-4c417f743ec9",
+      "DefinitionNamespacedLabel": "SpawnActorFromUEClassType_AAAActorAAUObjectAAUClass__CREF__AAFVector",
+      "Properties": [],
+      "InPins": [
+        {
+          "Identifier": "265da18b-51b1-4736-9d11-885fe79fb809",
+          "Label": "WorldContextObject",
+          "ValueTypeNamespacedLabel": "AAUObject",
+          "Qualifier": 0,
+          "EditorData": null,
+          "NativeParamIndex": 0
+        },
+        {
+          "Identifier": "4d775402-ce2e-47bc-a785-4617d472f143",
+          "Label": "ActorType",
+          "ValueTypeNamespacedLabel": "AAUClass",
+          "Qualifier": 0,
+          "EditorData": null,
+          "NativeParamIndex": 1
+        },
+        {
+          "Identifier": "039d46b4-94d3-4bd4-bff6-61bb514895eb",
+          "Label": "Location",
+          "ValueTypeNamespacedLabel": "AAFVector",
+          "Qualifier": 3,
+          "EditorData": null,
+          "NativeParamIndex": 2
+        }
+      ],
+      "OutPin": {
+        "Identifier": "6718ff1a-8ff7-4e2f-a5bb-e441d84a949a",
+        "Label": "Result",
+        "ValueTypeNamespacedLabel": "AAAActor",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": {
+        "Identifier": "ce1da853-e54f-4b5b-acea-5892daa9496f",
+        "Label": "",
+        "Conditional": false
+      },
+      "UnconditionalExecutionOutPin": {
+        "Identifier": "93e07864-b35e-4db3-93b3-16887ef1d434",
+        "Label": "",
+        "Conditional": false
+      },
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 2999.9999999999995,
+        "Y": 110.0
+      },
+      "Color": "#FF007A74"
+    },
+    {
+      "Identifier": "b9f59163-f9e6-4571-a634-21613757fe45",
+      "DefinitionNamespacedLabel": "Input_vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+      "Properties": [
+        {
+          "Label": "Name",
+          "EditorData": {
+            "VariantType": "RawString",
+            "Value": "OwnerActor"
+          }
+        }
+      ],
+      "InPins": [],
+      "OutPin": {
+        "Identifier": "45cf8f43-1798-4f69-b516-21d0e32f1be2",
+        "Label": "Value",
+        "ValueTypeNamespacedLabel": "vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": null,
+      "UnconditionalExecutionOutPin": null,
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 3357.793333333333,
+        "Y": 220.0
+      },
+      "Color": "#FF000000"
+    },
+    {
+      "Identifier": "45749ebe-7cba-462e-84ba-adc6634e7eab",
+      "DefinitionNamespacedLabel": "Input_vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+      "Properties": [
+        {
+          "Label": "Name",
+          "EditorData": {
+            "VariantType": "RawString",
+            "Value": "OwnerActor"
+          }
+        }
+      ],
+      "InPins": [],
+      "OutPin": {
+        "Identifier": "7e9cd64a-40de-478f-b180-9e511dddddcf",
+        "Label": "Value",
+        "ValueTypeNamespacedLabel": "vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": null,
+      "UnconditionalExecutionOutPin": null,
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 2700.0,
+        "Y": 220.0
+      },
+      "Color": "#FF000000"
+    },
+    {
+      "Identifier": "bc83c0e8-2c4c-485b-bc4f-18c1a01ef374",
+      "DefinitionNamespacedLabel": "ClassVariableGet_vtA6F9F48415D14DA0AFAC8C6F09A6CE8F__INREF__vtE28BD28465794FC58110A875D043F159",
+      "Properties": [
+        {
+          "Label": "Type",
+          "EditorData": {
+            "VariantType": "ValueType",
+            "Value": "UE Class Type"
+          }
+        },
+        {
+          "Label": "Name",
+          "EditorData": {
+            "VariantType": "RawString",
+            "Value": "kamikazi_explosion"
+          }
+        }
+      ],
+      "InPins": [
+        {
+          "Identifier": "99e2efeb-be90-4a1a-b52e-e664f489daa3",
+          "Label": "Source Class",
+          "ValueTypeNamespacedLabel": "vtE28BD28465794FC58110A875D043F159",
+          "Qualifier": 2,
+          "EditorData": {
+            "VariantType": "AbsClass"
+          },
+          "NativeParamIndex": -1
+        }
+      ],
+      "OutPin": {
+        "Identifier": "fea24ae0-2416-48d2-89b8-04138984d3a0",
+        "Label": "Value",
+        "ValueTypeNamespacedLabel": "vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+        "Qualifier": 3,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": null,
+      "UnconditionalExecutionOutPin": null,
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 2700.0,
+        "Y": 419.18000000000006
+      },
+      "Color": "#FF2D5C1F"
+    },
+    {
+      "Identifier": "dd7927f1-5db6-4567-84df-8ff676c90abc",
+      "DefinitionNamespacedLabel": "K2_GetActorLocation_AAFVectorAAAActor",
+      "Properties": [],
+      "InPins": [
+        {
+          "Identifier": "7fa2e166-c942-4e84-93a4-598c842aed62",
+          "Label": "Target",
+          "ValueTypeNamespacedLabel": "AAAActor",
+          "Qualifier": 0,
+          "EditorData": null,
+          "NativeParamIndex": 0
+        }
+      ],
+      "OutPin": {
+        "Identifier": "f0445ee4-5ff4-40a3-b561-51acf4df3a73",
+        "Label": "Result",
+        "ValueTypeNamespacedLabel": "AAFVector",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": {
+        "Identifier": "757e092b-da4b-4973-ac49-c7452f1f0868",
+        "Label": "",
+        "Conditional": false
+      },
+      "UnconditionalExecutionOutPin": {
+        "Identifier": "e655580c-b79a-4630-9c28-08e36b71abb2",
+        "Label": "",
+        "Conditional": false
+      },
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 2700.0,
+        "Y": 733.7
+      },
+      "Color": "#FF007A74"
+    },
+    {
+      "Identifier": "31809e94-12dc-48d7-974c-693d10eedac7",
+      "DefinitionNamespacedLabel": "Input_vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+      "Properties": [
+        {
+          "Label": "Name",
+          "EditorData": {
+            "VariantType": "RawString",
+            "Value": "OwnerActor"
+          }
+        }
+      ],
+      "InPins": [],
+      "OutPin": {
+        "Identifier": "b100156a-54e6-4e7f-9dcb-efa38afff353",
+        "Label": "Value",
+        "ValueTypeNamespacedLabel": "vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": null,
+      "UnconditionalExecutionOutPin": null,
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 2400.0,
+        "Y": 733.7
+      },
+      "Color": "#FF000000"
+    },
+    {
+      "Identifier": "bff05425-e750-4792-b0a7-67c53942e82c",
+      "DefinitionNamespacedLabel": "EventBinding_",
+      "Properties": [
+        {
+          "Label": "Event Name",
+          "EditorData": {
+            "VariantType": "ClassEventName",
+            "Value": "On Begin Overlap"
+          }
+        }
+      ],
+      "InPins": [],
+      "OutPin": null,
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": null,
+      "UnconditionalExecutionOutPin": {
+        "Identifier": "6c6d2ab7-3e9e-47ae-b7e2-52d4800a9373",
+        "Label": "",
+        "Conditional": false
+      },
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 0.0,
+        "Y": 958.9000000000001
+      },
+      "Color": "#FF660900"
+    },
+    {
+      "Identifier": "4c68fa0b-5172-4252-a61a-cacb9c5514f6",
+      "DefinitionNamespacedLabel": "Branch_vtECB05D148E874058B1DE125D357137C3",
+      "Properties": [],
+      "InPins": [
+        {
+          "Identifier": "6c6a4ee5-0486-44ad-bc92-0297254772d6",
+          "Label": "Condition",
+          "ValueTypeNamespacedLabel": "vtECB05D148E874058B1DE125D357137C3",
+          "Qualifier": 0,
+          "EditorData": {
+            "VariantType": "Boolean",
+            "Value": false
+          },
+          "NativeParamIndex": -1
+        }
+      ],
+      "OutPin": null,
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": {
+        "Identifier": "eb5f0c59-f71d-43a5-b64a-eeb355008f80",
+        "Label": "",
+        "Conditional": false
+      },
+      "UnconditionalExecutionOutPin": {
+        "Identifier": "f64a52a1-f690-478c-aa7d-32c462acf40b",
+        "Label": "",
+        "Conditional": false
+      },
+      "ConditionalExecutionOutPins": [
+        {
+          "Identifier": "8332c19a-7c6a-4098-9a23-781ce4ca9b8a",
+          "Label": "OnTrue",
+          "Conditional": true
+        },
+        {
+          "Identifier": "a5c09d2f-dd64-4c89-9443-022040c77a21",
+          "Label": "OnFalse",
+          "Conditional": true
+        }
+      ],
+      "Extensions": [],
+      "Position": {
+        "X": 899.9999999999998,
+        "Y": 958.9000000000001
+      },
+      "Color": "#FF7A6000"
+    },
+    {
+      "Identifier": "b5f01d6d-afed-45dc-9430-253039537f23",
+      "DefinitionNamespacedLabel": "ActorHasTag_AABBoolAAAActorAAFName",
+      "Properties": [],
+      "InPins": [
+        {
+          "Identifier": "408caee8-cfe7-4f62-8063-5ddc15a3b8b1",
+          "Label": "Target",
+          "ValueTypeNamespacedLabel": "AAAActor",
+          "Qualifier": 0,
+          "EditorData": null,
+          "NativeParamIndex": 0
+        },
+        {
+          "Identifier": "75ea88ea-9cf6-4fa6-b2c5-88ea6eadfbc8",
+          "Label": "Tag",
+          "ValueTypeNamespacedLabel": "AAFName",
+          "Qualifier": 0,
+          "EditorData": null,
+          "NativeParamIndex": 1
+        }
+      ],
+      "OutPin": {
+        "Identifier": "91561875-51b1-44a4-9f48-35d8fdfc2783",
+        "Label": "Result",
+        "ValueTypeNamespacedLabel": "AABBool",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": {
+        "Identifier": "4e7f6790-58fe-4aca-b4b5-bec7d23fe948",
+        "Label": "",
+        "Conditional": false
+      },
+      "UnconditionalExecutionOutPin": {
+        "Identifier": "19a2679d-8df4-4545-ae0b-a65b3cea0264",
+        "Label": "",
+        "Conditional": false
+      },
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 600.0,
+        "Y": 1068.9
+      },
+      "Color": "#FF007A74"
+    },
+    {
+      "Identifier": "d3dd22d3-675c-4bf1-a9ae-845a548057d1",
+      "DefinitionNamespacedLabel": "Input_vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+      "Properties": [
+        {
+          "Label": "Name",
+          "EditorData": {
+            "VariantType": "RawString",
+            "Value": "OtherActor"
+          }
+        }
+      ],
+      "InPins": [],
+      "OutPin": {
+        "Identifier": "4d5bf4ec-53f5-4469-811f-35744480aada",
+        "Label": "Value",
+        "ValueTypeNamespacedLabel": "vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": null,
+      "UnconditionalExecutionOutPin": null,
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 300.0,
+        "Y": 1068.9
+      },
+      "Color": "#FF000000"
+    },
+    {
+      "Identifier": "c9b24be9-528a-4173-ba8a-7a71198d8aca",
+      "DefinitionNamespacedLabel": "MakeAAFName_AAFNameAABRawString",
+      "Properties": [],
+      "InPins": [
+        {
+          "Identifier": "2e0d4246-33e7-45ad-a74f-3debcf1b459c",
+          "Label": "Text",
+          "ValueTypeNamespacedLabel": "AABRawString",
+          "Qualifier": 0,
+          "EditorData": {
+            "VariantType": "RawString",
+            "Value": "player_projectile"
+          },
+          "NativeParamIndex": 0
+        }
+      ],
+      "OutPin": {
+        "Identifier": "e773243e-c37a-4554-9ad6-8801bae2ca90",
+        "Label": "Result",
+        "ValueTypeNamespacedLabel": "AAFName",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": null,
+      "UnconditionalExecutionOutPin": null,
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 300.0,
+        "Y": 1268.08
+      },
+      "Color": "#FF2D5C1F"
+    },
+    {
+      "Identifier": "3a0070a4-e55a-487a-9277-6692d53e7c8b",
+      "DefinitionNamespacedLabel": "SpawnActorFromUEClassType_AAAActorAAUObjectAAUClass__CREF__AAFVector",
+      "Properties": [],
+      "InPins": [
+        {
+          "Identifier": "7661865b-a807-41f3-a7d6-dc958a673e12",
+          "Label": "WorldContextObject",
+          "ValueTypeNamespacedLabel": "AAUObject",
+          "Qualifier": 0,
+          "EditorData": null,
+          "NativeParamIndex": 0
+        },
+        {
+          "Identifier": "9868d256-fc53-4c4c-aba9-901c6ec6d088",
+          "Label": "ActorType",
+          "ValueTypeNamespacedLabel": "AAUClass",
+          "Qualifier": 0,
+          "EditorData": null,
+          "NativeParamIndex": 1
+        },
+        {
+          "Identifier": "f450da93-c447-4c35-aa1c-34acf181f9d3",
+          "Label": "Location",
+          "ValueTypeNamespacedLabel": "AAFVector",
+          "Qualifier": 3,
+          "EditorData": null,
+          "NativeParamIndex": 2
+        }
+      ],
+      "OutPin": {
+        "Identifier": "4b55588d-f861-4c4f-8fba-f5585e1f1dd5",
+        "Label": "Result",
+        "ValueTypeNamespacedLabel": "AAAActor",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": {
+        "Identifier": "35ddbb7b-9400-48a0-95fe-14fb91cce278",
+        "Label": "",
+        "Conditional": false
+      },
+      "UnconditionalExecutionOutPin": {
+        "Identifier": "847dc610-da3f-47f5-ae8a-4b025907e0db",
+        "Label": "",
+        "Conditional": false
+      },
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 1799.9999999999998,
+        "Y": 1068.9
+      },
+      "Color": "#FF007A74"
+    },
+    {
+      "Identifier": "54218832-5a12-43ab-bbf7-c5d55ba55797",
+      "DefinitionNamespacedLabel": "Input_vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+      "Properties": [
+        {
+          "Label": "Name",
+          "EditorData": {
+            "VariantType": "RawString",
+            "Value": "OwnerActor"
+          }
+        }
+      ],
+      "InPins": [],
+      "OutPin": {
+        "Identifier": "95ed470b-e372-430c-b4f4-9fe2255d5dcc",
+        "Label": "Value",
+        "ValueTypeNamespacedLabel": "vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": null,
+      "UnconditionalExecutionOutPin": null,
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 1499.9999999999998,
+        "Y": 1178.9
+      },
+      "Color": "#FF000000"
+    },
+    {
+      "Identifier": "52813c94-31af-45fd-9650-ab1b6dbf6fa8",
+      "DefinitionNamespacedLabel": "ClassVariableGet_vtA6F9F48415D14DA0AFAC8C6F09A6CE8F__INREF__vtE28BD28465794FC58110A875D043F159",
+      "Properties": [
+        {
+          "Label": "Type",
+          "EditorData": {
+            "VariantType": "ValueType",
+            "Value": "UE Class Type"
+          }
+        },
+        {
+          "Label": "Name",
+          "EditorData": {
+            "VariantType": "RawString",
+            "Value": "kamikazi_explosion"
+          }
+        }
+      ],
+      "InPins": [
+        {
+          "Identifier": "e63563a7-3ec0-410c-81c6-1a3cebd42957",
+          "Label": "Source Class",
+          "ValueTypeNamespacedLabel": "vtE28BD28465794FC58110A875D043F159",
+          "Qualifier": 2,
+          "EditorData": {
+            "VariantType": "AbsClass"
+          },
+          "NativeParamIndex": -1
+        }
+      ],
+      "OutPin": {
+        "Identifier": "13845d7b-a544-4f5c-98fc-b599ba3ee9af",
+        "Label": "Value",
+        "ValueTypeNamespacedLabel": "vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+        "Qualifier": 3,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": null,
+      "UnconditionalExecutionOutPin": null,
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 1499.9999999999998,
+        "Y": 1378.0800000000002
+      },
+      "Color": "#FF2D5C1F"
+    },
+    {
+      "Identifier": "cd9f4f7c-f974-48df-bb8c-81cac9dabec1",
+      "DefinitionNamespacedLabel": "K2_GetActorLocation_AAFVectorAAAActor",
+      "Properties": [],
+      "InPins": [
+        {
+          "Identifier": "ed2d3341-a6f2-4222-86fa-8ab0f68273ba",
+          "Label": "Target",
+          "ValueTypeNamespacedLabel": "AAAActor",
+          "Qualifier": 0,
+          "EditorData": null,
+          "NativeParamIndex": 0
+        }
+      ],
+      "OutPin": {
+        "Identifier": "bb11c8f3-af1e-4cc6-a5f7-b05fd406ca20",
+        "Label": "Result",
+        "ValueTypeNamespacedLabel": "AAFVector",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": {
+        "Identifier": "4cd56928-0882-4ad5-8420-08eeeb296874",
+        "Label": "",
+        "Conditional": false
+      },
+      "UnconditionalExecutionOutPin": {
+        "Identifier": "e5be783d-9c35-43c4-b79b-9eab7e237948",
+        "Label": "",
+        "Conditional": false
+      },
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 1499.9999999999998,
+        "Y": 1692.6000000000001
+      },
+      "Color": "#FF007A74"
+    },
+    {
+      "Identifier": "3e5f0e1b-3729-4d12-abd5-c0ed1d8dd4fb",
+      "DefinitionNamespacedLabel": "Input_vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+      "Properties": [
+        {
+          "Label": "Name",
+          "EditorData": {
+            "VariantType": "RawString",
+            "Value": "OwnerActor"
+          }
+        }
+      ],
+      "InPins": [],
+      "OutPin": {
+        "Identifier": "736d22ad-2822-4fcb-9510-491302752a92",
+        "Label": "Value",
+        "ValueTypeNamespacedLabel": "vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": null,
+      "UnconditionalExecutionOutPin": null,
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 1199.9999999999998,
+        "Y": 1692.6000000000001
+      },
+      "Color": "#FF000000"
+    },
+    {
+      "Identifier": "6ea3e98b-9310-4f31-932f-46315cb27a7b",
+      "DefinitionNamespacedLabel": "K2_DestroyActor_ExecutionAAAActor",
+      "Properties": [],
+      "InPins": [
+        {
+          "Identifier": "59d26928-233f-4d1b-a675-05c64878fa49",
+          "Label": "Target",
+          "ValueTypeNamespacedLabel": "AAAActor",
+          "Qualifier": 0,
+          "EditorData": null,
+          "NativeParamIndex": 0
+        }
+      ],
+      "OutPin": null,
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": {
+        "Identifier": "ec0ee96f-f7cc-4152-9c15-cb29e6e5edb2",
+        "Label": "",
+        "Conditional": false
+      },
+      "UnconditionalExecutionOutPin": {
+        "Identifier": "fddd735b-ee39-4a6c-8c3f-d1e21b3ee4b8",
+        "Label": "",
+        "Conditional": false
+      },
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 2457.793333333333,
+        "Y": 1068.9
+      },
+      "Color": "#FF007A74"
+    },
+    {
+      "Identifier": "aba5f381-890e-4f7a-ad7f-6f082bff3f71",
+      "DefinitionNamespacedLabel": "Input_vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+      "Properties": [
+        {
+          "Label": "Name",
+          "EditorData": {
+            "VariantType": "RawString",
+            "Value": "OwnerActor"
+          }
+        }
+      ],
+      "InPins": [],
+      "OutPin": {
+        "Identifier": "9f9f5c2b-23f1-497f-9905-ba543457d801",
+        "Label": "Value",
+        "ValueTypeNamespacedLabel": "vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": null,
+      "UnconditionalExecutionOutPin": null,
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 2157.793333333333,
+        "Y": 1178.9
+      },
+      "Color": "#FF000000"
+    }
+  ],
+  "Links": [
+    {
+      "InNodeIdentifier": "785818d7-43d8-4047-a232-bf1e3daad2e7",
+      "InNodePinIdentifier": "f5846dea-d550-4aab-a5d4-3d0b2562b3a1",
+      "OutNodeIdentifier": "9de11819-e668-4c49-984e-4d9d1858edb5",
+      "OutNodePinIdentifier": "392d2080-3ac7-4014-8268-6de54a400f1c"
+    },
+    {
+      "InNodeIdentifier": "648d3ebb-c608-460f-a549-dcbbf1e6fac1",
+      "InNodePinIdentifier": "5ce22c46-7966-4e5c-882b-09b810cbd3b0",
+      "OutNodeIdentifier": "1e6bbf92-2d98-452b-b7b9-3a9b8e275017",
+      "OutNodePinIdentifier": "49785849-dab1-4746-86ab-0b1a4046bcd6"
+    },
+    {
+      "InNodeIdentifier": "12bbb4aa-9014-4afd-aecb-ae78c399bc11",
+      "InNodePinIdentifier": "5d4aec16-8b78-4c3e-8df6-326c6face21d",
+      "OutNodeIdentifier": "785818d7-43d8-4047-a232-bf1e3daad2e7",
+      "OutNodePinIdentifier": "dc7a9704-d56b-4ae2-afaa-165400bfa64e"
+    },
+    {
+      "InNodeIdentifier": "85a71f10-53b2-4b42-90cb-a4613d989014",
+      "InNodePinIdentifier": "89abfe30-41ec-4982-8345-23cafc5782fe",
+      "OutNodeIdentifier": "12bbb4aa-9014-4afd-aecb-ae78c399bc11",
+      "OutNodePinIdentifier": "924d2495-f7b2-465c-8364-d2c94e69e106"
+    },
+    {
+      "InNodeIdentifier": "85a71f10-53b2-4b42-90cb-a4613d989014",
+      "InNodePinIdentifier": "21e3649b-d761-4141-94b1-422fc861ff37",
+      "OutNodeIdentifier": "648d3ebb-c608-460f-a549-dcbbf1e6fac1",
+      "OutNodePinIdentifier": "69666cbb-1a54-4259-839e-74e62d3c1b42"
+    },
+    {
+      "InNodeIdentifier": "58fa09fe-84d5-43bd-ad67-adbd78c8ca7c",
+      "InNodePinIdentifier": "db5f3af7-ace1-44a1-9f5f-9f73e3dbe1a9",
+      "OutNodeIdentifier": "85a71f10-53b2-4b42-90cb-a4613d989014",
+      "OutNodePinIdentifier": "89256732-59e6-4e41-92a9-06c1da563c0a"
+    },
+    {
+      "InNodeIdentifier": "1c1c84c3-689e-47a5-a233-0a9735b15f17",
+      "InNodePinIdentifier": "b40f1eaf-36cc-4528-8cc9-b6664e61eb1a",
+      "OutNodeIdentifier": "58fa09fe-84d5-43bd-ad67-adbd78c8ca7c",
+      "OutNodePinIdentifier": "ee8740b2-1102-4b46-bc70-8996d17bcf75"
+    },
+    {
+      "InNodeIdentifier": "e0e2c5ad-19c4-475c-af23-30998f011c72",
+      "InNodePinIdentifier": "6798df93-1423-4f66-846a-3aa621717e41",
+      "OutNodeIdentifier": "1c1c84c3-689e-47a5-a233-0a9735b15f17",
+      "OutNodePinIdentifier": "934f80c4-8648-4142-b8b3-3253d5afd319"
+    },
+    {
+      "InNodeIdentifier": "cf7df322-40e4-4b20-b0c3-7cfa6f10dd79",
+      "InNodePinIdentifier": "bba23b38-f0a7-46e3-9d04-3a4f403a4ef6",
+      "OutNodeIdentifier": "b9f59163-f9e6-4571-a634-21613757fe45",
+      "OutNodePinIdentifier": "45cf8f43-1798-4f69-b516-21d0e32f1be2"
+    },
+    {
+      "InNodeIdentifier": "337c7559-7b49-4cfd-8418-4c417f743ec9",
+      "InNodePinIdentifier": "265da18b-51b1-4736-9d11-885fe79fb809",
+      "OutNodeIdentifier": "45749ebe-7cba-462e-84ba-adc6634e7eab",
+      "OutNodePinIdentifier": "7e9cd64a-40de-478f-b180-9e511dddddcf"
+    },
+    {
+      "InNodeIdentifier": "337c7559-7b49-4cfd-8418-4c417f743ec9",
+      "InNodePinIdentifier": "4d775402-ce2e-47bc-a785-4617d472f143",
+      "OutNodeIdentifier": "bc83c0e8-2c4c-485b-bc4f-18c1a01ef374",
+      "OutNodePinIdentifier": "fea24ae0-2416-48d2-89b8-04138984d3a0"
+    },
+    {
+      "InNodeIdentifier": "dd7927f1-5db6-4567-84df-8ff676c90abc",
+      "InNodePinIdentifier": "7fa2e166-c942-4e84-93a4-598c842aed62",
+      "OutNodeIdentifier": "31809e94-12dc-48d7-974c-693d10eedac7",
+      "OutNodePinIdentifier": "b100156a-54e6-4e7f-9dcb-efa38afff353"
+    },
+    {
+      "InNodeIdentifier": "337c7559-7b49-4cfd-8418-4c417f743ec9",
+      "InNodePinIdentifier": "039d46b4-94d3-4bd4-bff6-61bb514895eb",
+      "OutNodeIdentifier": "dd7927f1-5db6-4567-84df-8ff676c90abc",
+      "OutNodePinIdentifier": "f0445ee4-5ff4-40a3-b561-51acf4df3a73"
+    },
+    {
+      "InNodeIdentifier": "b5f01d6d-afed-45dc-9430-253039537f23",
+      "InNodePinIdentifier": "408caee8-cfe7-4f62-8063-5ddc15a3b8b1",
+      "OutNodeIdentifier": "d3dd22d3-675c-4bf1-a9ae-845a548057d1",
+      "OutNodePinIdentifier": "4d5bf4ec-53f5-4469-811f-35744480aada"
+    },
+    {
+      "InNodeIdentifier": "b5f01d6d-afed-45dc-9430-253039537f23",
+      "InNodePinIdentifier": "75ea88ea-9cf6-4fa6-b2c5-88ea6eadfbc8",
+      "OutNodeIdentifier": "c9b24be9-528a-4173-ba8a-7a71198d8aca",
+      "OutNodePinIdentifier": "e773243e-c37a-4554-9ad6-8801bae2ca90"
+    },
+    {
+      "InNodeIdentifier": "4c68fa0b-5172-4252-a61a-cacb9c5514f6",
+      "InNodePinIdentifier": "6c6a4ee5-0486-44ad-bc92-0297254772d6",
+      "OutNodeIdentifier": "b5f01d6d-afed-45dc-9430-253039537f23",
+      "OutNodePinIdentifier": "91561875-51b1-44a4-9f48-35d8fdfc2783"
+    },
+    {
+      "InNodeIdentifier": "3a0070a4-e55a-487a-9277-6692d53e7c8b",
+      "InNodePinIdentifier": "7661865b-a807-41f3-a7d6-dc958a673e12",
+      "OutNodeIdentifier": "54218832-5a12-43ab-bbf7-c5d55ba55797",
+      "OutNodePinIdentifier": "95ed470b-e372-430c-b4f4-9fe2255d5dcc"
+    },
+    {
+      "InNodeIdentifier": "3a0070a4-e55a-487a-9277-6692d53e7c8b",
+      "InNodePinIdentifier": "9868d256-fc53-4c4c-aba9-901c6ec6d088",
+      "OutNodeIdentifier": "52813c94-31af-45fd-9650-ab1b6dbf6fa8",
+      "OutNodePinIdentifier": "13845d7b-a544-4f5c-98fc-b599ba3ee9af"
+    },
+    {
+      "InNodeIdentifier": "cd9f4f7c-f974-48df-bb8c-81cac9dabec1",
+      "InNodePinIdentifier": "ed2d3341-a6f2-4222-86fa-8ab0f68273ba",
+      "OutNodeIdentifier": "3e5f0e1b-3729-4d12-abd5-c0ed1d8dd4fb",
+      "OutNodePinIdentifier": "736d22ad-2822-4fcb-9510-491302752a92"
+    },
+    {
+      "InNodeIdentifier": "3a0070a4-e55a-487a-9277-6692d53e7c8b",
+      "InNodePinIdentifier": "f450da93-c447-4c35-aa1c-34acf181f9d3",
+      "OutNodeIdentifier": "cd9f4f7c-f974-48df-bb8c-81cac9dabec1",
+      "OutNodePinIdentifier": "bb11c8f3-af1e-4cc6-a5f7-b05fd406ca20"
+    },
+    {
+      "InNodeIdentifier": "6ea3e98b-9310-4f31-932f-46315cb27a7b",
+      "InNodePinIdentifier": "59d26928-233f-4d1b-a675-05c64878fa49",
+      "OutNodeIdentifier": "aba5f381-890e-4f7a-ad7f-6f082bff3f71",
+      "OutNodePinIdentifier": "9f9f5c2b-23f1-497f-9905-ba543457d801"
+    }
+  ],
+  "ExecutionLinks": [
+    {
+      "InNodeIdentifier": "e0e2c5ad-19c4-475c-af23-30998f011c72",
+      "OutNodeIdentifier": "f3c3f551-7da3-479a-95e7-fa7acebc41b2",
+      "OutNodeExecutionPinIdentifier": "e21969e6-f946-4c7d-9fe9-dfa0c6af41a7"
+    },
+    {
+      "InNodeIdentifier": "337c7559-7b49-4cfd-8418-4c417f743ec9",
+      "OutNodeIdentifier": "e0e2c5ad-19c4-475c-af23-30998f011c72",
+      "OutNodeExecutionPinIdentifier": "521209ec-311d-47d6-9f0d-7d2e18dd40c2"
+    },
+    {
+      "InNodeIdentifier": "cf7df322-40e4-4b20-b0c3-7cfa6f10dd79",
+      "OutNodeIdentifier": "337c7559-7b49-4cfd-8418-4c417f743ec9",
+      "OutNodeExecutionPinIdentifier": "93e07864-b35e-4db3-93b3-16887ef1d434"
+    },
+    {
+      "InNodeIdentifier": "3a0070a4-e55a-487a-9277-6692d53e7c8b",
+      "OutNodeIdentifier": "4c68fa0b-5172-4252-a61a-cacb9c5514f6",
+      "OutNodeExecutionPinIdentifier": "8332c19a-7c6a-4098-9a23-781ce4ca9b8a"
+    },
+    {
+      "InNodeIdentifier": "6ea3e98b-9310-4f31-932f-46315cb27a7b",
+      "OutNodeIdentifier": "3a0070a4-e55a-487a-9277-6692d53e7c8b",
+      "OutNodeExecutionPinIdentifier": "847dc610-da3f-47f5-ae8a-4b025907e0db"
+    },
+    {
+      "InNodeIdentifier": "4c68fa0b-5172-4252-a61a-cacb9c5514f6",
+      "OutNodeIdentifier": "bff05425-e750-4792-b0a7-67c53942e82c",
+      "OutNodeExecutionPinIdentifier": "6c6d2ab7-3e9e-47ae-b7e2-52d4800a9373"
+    }
+  ],
+  "Annotations": []
+}

@@ -1,0 +1,136 @@
+#buildtarget:nodegraph
+#text:
+
+Class[Type:"Behavior Tree Task"]
+{
+    Event[Name:"Receive Execute"]
+    {
+        K2_DestroyActor(
+            in[n:"ControlledPawn"]());
+    }
+
+
+}
+
+
+#nodegraph:
+{
+  "Meta": {
+    "VariantType": "ClassDefinition",
+    "ClassName": "Behavior Tree Task",
+    "ClassVariables": []
+  },
+  "Nodes": [
+    {
+      "Identifier": "6f3c29a3-2858-4bee-83a2-bb150e74239a",
+      "DefinitionNamespacedLabel": "EventBinding_",
+      "Properties": [
+        {
+          "Label": "Event Name",
+          "EditorData": {
+            "VariantType": "ClassEventName",
+            "Value": "Receive Execute"
+          }
+        }
+      ],
+      "InPins": [],
+      "OutPin": null,
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": null,
+      "UnconditionalExecutionOutPin": {
+        "Identifier": "2bb3f389-b897-43c2-ac95-87d74f6b8d26",
+        "Label": "",
+        "Conditional": false
+      },
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 452.0,
+        "Y": 308.66666666666663
+      },
+      "Color": "#FF660900"
+    },
+    {
+      "Identifier": "8f2cdc39-ca0e-4682-939d-7913210df944",
+      "DefinitionNamespacedLabel": "K2_DestroyActor_ExecutionAAAActor",
+      "Properties": [],
+      "InPins": [
+        {
+          "Identifier": "35db76b7-f607-4804-bbe6-04f2bc46bba8",
+          "Label": "Target",
+          "ValueTypeNamespacedLabel": "AAAActor",
+          "Qualifier": 0,
+          "EditorData": null,
+          "NativeParamIndex": 0
+        }
+      ],
+      "OutPin": null,
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": {
+        "Identifier": "8185873f-fafd-4e8c-942a-3903efcc80d3",
+        "Label": "",
+        "Conditional": false
+      },
+      "UnconditionalExecutionOutPin": {
+        "Identifier": "ca820d4f-4452-4585-9aa7-81ca4da9af90",
+        "Label": "",
+        "Conditional": false
+      },
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 2103.333333333333,
+        "Y": 310.0000000000001
+      },
+      "Color": "#FF007A74"
+    },
+    {
+      "Identifier": "96572dc5-1d02-4f57-bf17-9f6d4cfc91dc",
+      "DefinitionNamespacedLabel": "Input_vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+      "Properties": [
+        {
+          "Label": "Name",
+          "EditorData": {
+            "VariantType": "RawString",
+            "Value": "ControlledPawn"
+          }
+        }
+      ],
+      "InPins": [],
+      "OutPin": {
+        "Identifier": "bed75c0c-547f-4c99-a46f-5f39a6b75d6f",
+        "Label": "Value",
+        "ValueTypeNamespacedLabel": "vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": null,
+      "UnconditionalExecutionOutPin": null,
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 1784.6666666666658,
+        "Y": 457.3333333333335
+      },
+      "Color": "#FF000000"
+    }
+  ],
+  "Links": [
+    {
+      "InNodeIdentifier": "8f2cdc39-ca0e-4682-939d-7913210df944",
+      "InNodePinIdentifier": "35db76b7-f607-4804-bbe6-04f2bc46bba8",
+      "OutNodeIdentifier": "96572dc5-1d02-4f57-bf17-9f6d4cfc91dc",
+      "OutNodePinIdentifier": "bed75c0c-547f-4c99-a46f-5f39a6b75d6f"
+    }
+  ],
+  "ExecutionLinks": [
+    {
+      "InNodeIdentifier": "8f2cdc39-ca0e-4682-939d-7913210df944",
+      "OutNodeIdentifier": "6f3c29a3-2858-4bee-83a2-bb150e74239a",
+      "OutNodeExecutionPinIdentifier": "2bb3f389-b897-43c2-ac95-87d74f6b8d26"
+    }
+  ],
+  "Annotations": []
+}
