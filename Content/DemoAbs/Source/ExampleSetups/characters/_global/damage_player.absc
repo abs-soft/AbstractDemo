@@ -1,0 +1,36 @@
+#buildtarget:text
+#text:
+
+Class[
+    Type:"Actor Component"]
+{
+    Event[Name:"On Begin Overlap"]
+    {
+    	let absComponent = GetAbstractComponentByTag(in[n:"OtherActor"](), MakeName("status"));
+        @"Only do damage to the player"
+        {
+	    	if (ComponentHasTag(absComponent, MakeName("player")))
+	    	{
+	    		if (LessThanOrEqualTo(GetAbsClassVarFloat(absComponent, MakeString("hit_i_frame_timer")), 0.0))
+	    		{
+	    			SetAbsClassVarInteger(absComponent, MakeString("health"), Subtract(GetAbsClassVarInteger(absComponent, MakeString("health")), 1));
+	    			SetAbsClassVarFloat(absComponent, MakeString("hit_i_frame_timer"), 2.0);
+	    		}
+	    	}
+        }
+    }
+}
+
+
+#nodegraph:
+{
+  "Meta": {
+    "VariantType": "ClassDefinition",
+    "ClassName": "Actor Component",
+    "ClassVariables": []
+  },
+  "Nodes": [],
+  "Links": [],
+  "ExecutionLinks": [],
+  "Annotations": []
+}

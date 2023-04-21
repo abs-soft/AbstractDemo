@@ -4,13 +4,13 @@
 Class[
     Type:"Actor Component",
     Vars:{
-        [t:Bool, n:"hook_direction"],
-        [t:Float, n:"hook_speed"],
-        [t:Rotator, n:"init_player_rotation"],
-        [t:Vector, n:"init_player_location"],
-        [t:Vector, n:"movement_direction"],
+        [t:Float, n:"timer"],
         [t:Float, n:"speed"],
-        [t:Float, n:"timer"]
+        [t:Vector, n:"movement_direction"],
+        [t:Vector, n:"init_player_location"],
+        [t:Rotator, n:"init_player_rotation"],
+        [t:Float, n:"hook_speed"],
+        [t:Bool, n:"hook_direction"]
     }]
 {
     Event[Name:"Begin Play"]
@@ -116,11 +116,21 @@ Class[
                         cv[t:Vector, n:"movement_direction"](self),
                         Multiply_DoubleDouble(
                             cv[t:Float, n:"speed"](self),
+                            
                             in[n:"DeltaSeconds"]()))),
                 false,
                 out null HitResult,
                 false);
         }
+    }
+
+    Event[Name:"On Begin Overlap"]
+    {
+    	let absComponent = CastToAAUActorComponent_AbstractBased(GetComponentByTag(in[n:"OtherActor"](), MakeName("status")));
+    	if (ComponentHasTag(absComponent, MakeName("enemy")))
+    	{
+    		SetAbsClassVarInteger(absComponent, MakeString("health"), Subtract(GetAbsClassVarInteger(absComponent, MakeString("health")), 1));
+    	}
     }
 
 

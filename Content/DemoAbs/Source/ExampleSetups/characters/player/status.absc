@@ -1,0 +1,75 @@
+#buildtarget:text
+#text:
+
+
+
+Class[
+	Type:"Actor Component",
+	Vars:
+	{
+        [t:Int32, n:"health"],
+        [t:Float, n:"hit_i_frame_timer"]
+	}]
+{
+	Event[Name:"Begin Play"]
+	{
+		cv[t:Auto, n:"health"](self) = 3;
+    	cv[t:Auto, n:"hit_i_frame_timer"](self) = 0.0;
+	}
+
+	Event[Name:"Tick"]
+	{
+        PrintString(
+            in[n:"OwnerActor"](),
+            Concat_StrStr(MakeString("PLAYER HEALTH: "), Conv_IntToString(cv[t:Auto, n:"health"](self))),
+            true,
+            false,
+            MakeAAFLinearColor(
+                0.0,
+                1.0,
+                0.0,
+                1.0),
+            10.0,
+            MakeName(
+                "player_health"));
+
+        if (GreaterThan(cv[t:Auto, n:"hit_i_frame_timer"](self), 0.0))
+        {
+        	cv[t:Auto, n:"hit_i_frame_timer"](self) = Subtract(cv[t:Auto, n:"hit_i_frame_timer"](self), in[n:"DeltaSeconds"]());
+	        PrintString(
+	            in[n:"OwnerActor"](),
+	            Concat_StrStr(MakeString("PLAYER HIT I FRAME: "), Conv_DoubleToString(Conv_FloatToDouble(cv[t:Auto, n:"hit_i_frame_timer"](self)))),
+	            true,
+	            false,
+	            MakeAAFLinearColor(
+	                0.0,
+	                0.0,
+	                1.0,
+	                1.0),
+	            0.1,
+	            MakeName(
+	                "player_hit_i_frame"));
+        }
+
+		if (LessThanOrEqualTo(cv[t:Auto, n:"health"](self), 0))
+		{
+			K2_DestroyActor(in[n:"OwnerActor"]());
+		}
+	}
+}
+
+
+
+
+#nodegraph:
+{
+  "Meta": {
+    "VariantType": "ClassDefinition",
+    "ClassName": "Actor Component",
+    "ClassVariables": []
+  },
+  "Nodes": [],
+  "Links": [],
+  "ExecutionLinks": [],
+  "Annotations": []
+}

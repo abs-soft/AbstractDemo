@@ -1,0 +1,39 @@
+#buildtarget:text
+#text:
+
+
+Class[
+	Type:"Actor Component",
+	Vars:
+	{
+        [t:Int32, n:"health"]
+	}]
+{
+	Event[Name:"Begin Play"]
+	{
+		cv[t:Auto, n:"health"](self) = 3;
+	}
+
+	Event[Name:"Tick"]
+	{
+		if (LessThanOrEqualTo(cv[t:Auto, n:"health"](self), 0))
+		{
+			K2_DestroyActor(in[n:"OwnerActor"]());
+		}
+	}
+}
+
+
+
+#nodegraph:
+{
+  "Meta": {
+    "VariantType": "ClassDefinition",
+    "ClassName": "Actor Component",
+    "ClassVariables": []
+  },
+  "Nodes": [],
+  "Links": [],
+  "ExecutionLinks": [],
+  "Annotations": []
+}

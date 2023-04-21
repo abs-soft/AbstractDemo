@@ -31,23 +31,6 @@ Class[
         }
     }
 
-    Event[Name:"On Begin Overlap"]
-    {
-        if (ActorHasTag(
-            in[n:"OtherActor"](),
-            MakeName(
-                "player_projectile")))
-        {
-            SpawnActorFromUEClassType(
-                in[n:"OwnerActor"](),
-                cv[t:UEClass, n:"kamikazi_explosion"](self),
-                K2_GetActorLocation(
-                    in[n:"OwnerActor"]()));
-            K2_DestroyActor(
-                in[n:"OwnerActor"]());
-        }
-    }
-
 
 }
 

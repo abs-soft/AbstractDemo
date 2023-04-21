@@ -1,0 +1,45 @@
+#buildtarget:text
+#text:
+
+
+Class[
+	Type:"Actor Component",
+	Vars:
+	{
+        [t:Int32, n:"health"],
+        [t:UEClass, n:"kamikazi_explosion"]
+	}]
+{
+	Event[Name:"Begin Play"]
+	{
+		cv[t:Auto, n:"health"](self) = 1;
+	}
+
+	Event[Name:"Tick"]
+	{
+		if (LessThanOrEqualTo(cv[t:Auto, n:"health"](self), 0))
+		{
+            SpawnActorFromUEClassType(
+                in[n:"OwnerActor"](),
+                cv[t:UEClass, n:"kamikazi_explosion"](self),
+                K2_GetActorLocation(
+                    in[n:"OwnerActor"]()));
+			K2_DestroyActor(in[n:"OwnerActor"]());
+		}
+	}
+}
+
+
+
+#nodegraph:
+{
+  "Meta": {
+    "VariantType": "ClassDefinition",
+    "ClassName": "Actor Component",
+    "ClassVariables": []
+  },
+  "Nodes": [],
+  "Links": [],
+  "ExecutionLinks": [],
+  "Annotations": []
+}
