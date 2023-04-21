@@ -23,6 +23,7 @@ SOFTWARE.
 #include "AbstractBlueprintFunctionLibrary.h"
 
 #include "AbstractBasedInterface.h"
+#include "ActorComponent_AbstractBased.h"
 
 bool UAbstractBlueprintFunctionLibrary::GetAbsClassVarBoolean(UObject* target, FString label)
 {
@@ -135,5 +136,49 @@ void UAbstractBlueprintFunctionLibrary::SetAbsClassVarActor(UObject* target, FSt
     if (IAbstractBasedInterface* abstractBasedObject = Cast<IAbstractBasedInterface>(target))
     {
         abstractBasedObject->GetInternal()->SetClassVar<AActor*>(TCHAR_TO_UTF8(*label), value);
+    }
+}
+
+UActorComponent* UAbstractBlueprintFunctionLibrary::GetComponentByTag(AActor* target, FName tag)
+{
+    TArray<UActorComponent*> abstractComponents = target->GetComponentsByTag(UActorComponent::StaticClass(), tag);
+    if (abstractComponents.Num() > 0)
+    {
+        return abstractComponents[0];
+    }
+    else
+    {
+        return nullptr;
+    }
+}
+
+UActorComponent_AbstractBased* UAbstractBlueprintFunctionLibrary::GetAbstractComponentByTag(AActor* target, FName tag)
+{
+    TArray<UActorComponent*> abstractComponents = target->GetComponentsByTag(UActorComponent_AbstractBased::StaticClass(), tag);
+    if (abstractComponents.Num() > 0)
+    {
+        return Cast<UActorComponent_AbstractBased>(abstractComponents[0]);
+    }
+    else
+    {
+        return nullptr;
+    }
+}
+
+void UAbstractBlueprintFunctionLibrary::ActivateAllAbstractComponentsWithTag(AActor* target, FName tag)
+{
+    TArray<UActorComponent*> abstractComponents = target->GetComponentsByTag(UActorComponent_AbstractBased::StaticClass(), tag);
+    for (UActorComponent* it : abstractComponents)
+    {
+        it->SetComponentTickEnabled(true);
+    }
+}
+
+void UAbstractBlueprintFunctionLibrary::DeactivateAllAbstractComponentsWithTag(AActor* target, FName tag)
+{
+    TArray<UActorComponent*> abstractComponents = target->GetComponentsByTag(UActorComponent_AbstractBased::StaticClass(), tag);
+    for (UActorComponent* it : abstractComponents)
+    {
+        it->SetComponentTickEnabled(false);
     }
 }

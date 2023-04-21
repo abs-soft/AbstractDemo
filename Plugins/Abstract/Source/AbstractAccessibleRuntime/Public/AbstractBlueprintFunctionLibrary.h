@@ -31,6 +31,7 @@ class ABSTRACTACCESSIBLERUNTIME_API UAbstractBlueprintFunctionLibrary : public U
 {
 	GENERATED_BODY()
 
+public:
 	UFUNCTION(BlueprintPure)
 	static bool GetAbsClassVarBoolean(UObject* target, FString label);
 
@@ -66,4 +67,16 @@ class ABSTRACTACCESSIBLERUNTIME_API UAbstractBlueprintFunctionLibrary : public U
 
 	UFUNCTION(BlueprintCallable)
 	static void SetAbsClassVarActor(UObject* target, FString label, AActor* value);
+
+	UFUNCTION(BlueprintPure)
+	static UActorComponent* GetComponentByTag(AActor* target, FName tag);
+
+	UFUNCTION(BlueprintPure)
+	static UActorComponent_AbstractBased* GetAbstractComponentByTag(AActor* target, FName tag);
+
+	UFUNCTION(BlueprintCallable)
+	static void ActivateAllAbstractComponentsWithTag(AActor* target, FName tag);
+
+	UFUNCTION(BlueprintCallable)
+	static void DeactivateAllAbstractComponentsWithTag(AActor* target, FName tag);
 };
