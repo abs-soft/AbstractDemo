@@ -1,4 +1,4 @@
-#buildtarget:nodegraph
+#buildtarget:text
 #text:
 
 Class[
@@ -10,8 +10,8 @@ Class[
     Event[Name:"Tick"]
     {
         cv[t:Float, n:"timer"](self) =
-            Add_DoubleDouble(
-                cv[t:Float, n:"timer"](self),
+            Add(
+                cv[t:Auto, n:"timer"](self),
                 in[n:"DeltaSeconds"]());
         if (Greater_DoubleDouble(
             cv[t:Float, n:"timer"](self),
@@ -21,8 +21,6 @@ Class[
                 in[n:"OwnerActor"]());
         }
     }
-
-
 }
 
 

@@ -1,4 +1,4 @@
-#buildtarget:nodegraph
+#buildtarget:text
 #text:
 
 Class[

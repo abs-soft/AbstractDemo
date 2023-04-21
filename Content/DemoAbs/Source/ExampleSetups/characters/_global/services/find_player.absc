@@ -138,7 +138,7 @@ Class[Type:"Behavior Tree Service"]
       "Extensions": [],
       "Position": {
         "X": 1839.9866666666667,
-        "Y": 109.99999999999994
+        "Y": 110.0
       },
       "Color": "#FF000000"
     },
@@ -174,7 +174,7 @@ Class[Type:"Behavior Tree Service"]
       "Extensions": [],
       "Position": {
         "X": 1500.0,
-        "Y": 309.17999999999995
+        "Y": 285.0
       },
       "Color": "#FF2D5C1F"
     },
@@ -207,7 +207,7 @@ Class[Type:"Behavior Tree Service"]
       "Extensions": [],
       "Position": {
         "X": 1800.0,
-        "Y": 309.17999999999995
+        "Y": 285.0
       },
       "Color": "#FF2D5C1F"
     },
@@ -285,40 +285,6 @@ Class[Type:"Behavior Tree Service"]
       "Color": "#FF007A74"
     },
     {
-      "Identifier": "40904787-a185-4208-a3d0-5091ce04d3da",
-      "DefinitionNamespacedLabel": "ConstantEnumValue_vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
-      "Properties": [
-        {
-          "Label": "Value",
-          "EditorData": {
-            "VariantType": "EnumSelection",
-            "TypeLocked": false,
-            "EnumName": "EBTNode Result",
-            "Value": "Succeeded"
-          }
-        }
-      ],
-      "InPins": [],
-      "OutPin": {
-        "Identifier": "3faab485-89ae-4a12-8fd6-2b446721e14a",
-        "Label": "",
-        "ValueTypeNamespacedLabel": "vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
-        "Qualifier": 1,
-        "EditorData": null,
-        "NativeParamIndex": -1
-      },
-      "RefOutPins": [],
-      "UnconditionalExecutionInPin": null,
-      "UnconditionalExecutionOutPin": null,
-      "ConditionalExecutionOutPins": [],
-      "Extensions": [],
-      "Position": {
-        "X": 3384.4433333333336,
-        "Y": 110.0
-      },
-      "Color": "#FF2D5C1F"
-    },
-    {
       "Identifier": "8303d491-3ddf-4ec1-94cf-cf036368aceb",
       "DefinitionNamespacedLabel": "Return_vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
       "Properties": [],
@@ -343,7 +309,7 @@ Class[Type:"Behavior Tree Service"]
       "ConditionalExecutionOutPins": [],
       "Extensions": [],
       "Position": {
-        "X": 3684.4433333333336,
+        "X": 2784.4433333333336,
         "Y": 0.0
       },
       "Color": "#FF000000"
@@ -434,8 +400,8 @@ Class[Type:"Behavior Tree Service"]
       "ConditionalExecutionOutPins": [],
       "Extensions": [],
       "Position": {
-        "X": 3086.665555555556,
-        "Y": 322.2222222222223
+        "X": 600.0,
+        "Y": 667.3599999999999
       },
       "Color": "#FF007A74"
     },
@@ -466,8 +432,8 @@ Class[Type:"Behavior Tree Service"]
       "ConditionalExecutionOutPins": [],
       "Extensions": [],
       "Position": {
-        "X": 2778.887777777778,
-        "Y": 510.00000000000034
+        "X": 300.0,
+        "Y": 667.3599999999999
       },
       "Color": "#FF000000"
     },
@@ -507,74 +473,10 @@ Class[Type:"Behavior Tree Service"]
       "ConditionalExecutionOutPins": [],
       "Extensions": [],
       "Position": {
-        "X": 2778.887777777778,
-        "Y": 709.1800000000003
+        "X": 300.0,
+        "Y": 842.3599999999999
       },
       "Color": "#FF007A74"
-    },
-    {
-      "Identifier": "8b9fd604-294d-4bb6-b354-859dc0166f2c",
-      "DefinitionNamespacedLabel": "LocalVarGet_vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
-      "Properties": [
-        {
-          "Label": "Name",
-          "EditorData": {
-            "VariantType": "LocalVarName",
-            "Value": "test"
-          }
-        }
-      ],
-      "InPins": [],
-      "OutPin": {
-        "Identifier": "418f6a52-6828-4201-ba81-e0e6d2f7dec1",
-        "Label": "Value",
-        "ValueTypeNamespacedLabel": "vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
-        "Qualifier": 2,
-        "EditorData": null,
-        "NativeParamIndex": -1
-      },
-      "RefOutPins": [],
-      "UnconditionalExecutionInPin": null,
-      "UnconditionalExecutionOutPin": null,
-      "ConditionalExecutionOutPins": [],
-      "Extensions": [],
-      "Position": {
-        "X": 1839.9866666666667,
-        "Y": 516.54
-      },
-      "Color": "#FF575352"
-    },
-    {
-      "Identifier": "ec1d4558-33d4-4d5d-bd58-014666a8a5b0",
-      "DefinitionNamespacedLabel": "LocalVarGet_vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
-      "Properties": [
-        {
-          "Label": "Name",
-          "EditorData": {
-            "VariantType": "LocalVarName",
-            "Value": "test"
-          }
-        }
-      ],
-      "InPins": [],
-      "OutPin": {
-        "Identifier": "f216d438-441f-4993-82ab-e555240cee77",
-        "Label": "Value",
-        "ValueTypeNamespacedLabel": "vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
-        "Qualifier": 2,
-        "EditorData": null,
-        "NativeParamIndex": -1
-      },
-      "RefOutPins": [],
-      "UnconditionalExecutionInPin": null,
-      "UnconditionalExecutionOutPin": null,
-      "ConditionalExecutionOutPins": [],
-      "Extensions": [],
-      "Position": {
-        "X": 2478.887777777778,
-        "Y": 709.1800000000003
-      },
-      "Color": "#FF575352"
     },
     {
       "Identifier": "0ca22c95-4bb4-4b7f-8dff-8c9a98f4e1fd",
@@ -688,8 +590,8 @@ Class[Type:"Behavior Tree Service"]
       "ConditionalExecutionOutPins": [],
       "Extensions": [],
       "Position": {
-        "X": 2778.887777777778,
-        "Y": 934.3800000000002
+        "X": 300.0,
+        "Y": 1061.5599999999997
       },
       "Color": "#FF2D5C1F"
     },
@@ -724,8 +626,8 @@ Class[Type:"Behavior Tree Service"]
       "ConditionalExecutionOutPins": [],
       "Extensions": [],
       "Position": {
-        "X": 2778.887777777778,
-        "Y": 1315.0200000000004
+        "X": 300.0,
+        "Y": 1442.1999999999998
       },
       "Color": "#FF2D5C1F"
     },
@@ -760,8 +662,8 @@ Class[Type:"Behavior Tree Service"]
       "ConditionalExecutionOutPins": [],
       "Extensions": [],
       "Position": {
-        "X": 2450.1701631701644,
-        "Y": 430.39160839160866
+        "X": 0.0,
+        "Y": 1649.56
       },
       "Color": "#FF2D5C1F"
     },
@@ -812,10 +714,108 @@ Class[Type:"Behavior Tree Service"]
       "ConditionalExecutionOutPins": [],
       "Extensions": [],
       "Position": {
-        "X": 581.564471454471,
-        "Y": 121.94727494727567
+        "X": 600.0,
+        "Y": 110.00000000000003
       },
       "Color": "#FF007A74"
+    },
+    {
+      "Identifier": "fe743471-b515-4de7-a5b3-3af73ab37137",
+      "DefinitionNamespacedLabel": "LocalVarGet___REF__vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+      "Properties": [
+        {
+          "Label": "Name",
+          "EditorData": {
+            "VariantType": "LocalVarName",
+            "Value": "test"
+          }
+        }
+      ],
+      "InPins": [],
+      "OutPin": {
+        "Identifier": "093b33a7-9725-4275-8f9b-a166b3db2ef7",
+        "Label": "Value",
+        "ValueTypeNamespacedLabel": "vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+        "Qualifier": 2,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": null,
+      "UnconditionalExecutionOutPin": null,
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 1839.9866666666667,
+        "Y": 492.36
+      },
+      "Color": "#FF575352"
+    },
+    {
+      "Identifier": "ebdd95e9-f6f5-4736-a0a7-7eefac96ee23",
+      "DefinitionNamespacedLabel": "LocalVarGet___REF__vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+      "Properties": [
+        {
+          "Label": "Name",
+          "EditorData": {
+            "VariantType": "LocalVarName",
+            "Value": "test"
+          }
+        }
+      ],
+      "InPins": [],
+      "OutPin": {
+        "Identifier": "4783f852-db14-45e3-a751-46d6d8eb9e88",
+        "Label": "Value",
+        "ValueTypeNamespacedLabel": "vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+        "Qualifier": 2,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": null,
+      "UnconditionalExecutionOutPin": null,
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 0.0,
+        "Y": 842.3599999999999
+      },
+      "Color": "#FF575352"
+    },
+    {
+      "Identifier": "cf6bb6e5-5d78-4190-bf92-33b672c8d94f",
+      "DefinitionNamespacedLabel": "ConstantEnumValue___CONST__vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+      "Properties": [
+        {
+          "Label": "Value",
+          "EditorData": {
+            "VariantType": "EnumSelection",
+            "TypeLocked": false,
+            "EnumName": "EBTNode Result",
+            "Value": "Succeeded"
+          }
+        }
+      ],
+      "InPins": [],
+      "OutPin": {
+        "Identifier": "6b63c502-187d-4d64-a621-6af44d768365",
+        "Label": "",
+        "ValueTypeNamespacedLabel": "vtA6F9F48415D14DA0AFAC8C6F09A6CE8F",
+        "Qualifier": 1,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": null,
+      "UnconditionalExecutionOutPin": null,
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 2484.4433333333336,
+        "Y": 110.0
+      },
+      "Color": "#FF2D5C1F"
     }
   ],
   "Links": [
@@ -838,28 +838,10 @@ Class[Type:"Behavior Tree Service"]
       "OutNodePinIdentifier": "437de53c-3b6d-4562-a1ca-04175c5bb359"
     },
     {
-      "InNodeIdentifier": "8303d491-3ddf-4ec1-94cf-cf036368aceb",
-      "InNodePinIdentifier": "eed45138-ef3f-4755-8257-5ce94a9018c6",
-      "OutNodeIdentifier": "40904787-a185-4208-a3d0-5091ce04d3da",
-      "OutNodePinIdentifier": "3faab485-89ae-4a12-8fd6-2b446721e14a"
-    },
-    {
       "InNodeIdentifier": "6eedc637-a86f-4593-89c5-b6ff78f24309",
       "InNodePinIdentifier": "0735e04f-4a40-431c-9d05-8e41d06d481b",
       "OutNodeIdentifier": "3809d683-1f59-42a2-8a0d-272344a59b5d",
       "OutNodePinIdentifier": "d5cc13fb-7415-4e08-8ae5-8094b836ec9f"
-    },
-    {
-      "InNodeIdentifier": "e733c3b1-d173-47bc-b3d0-1337c917f3d8",
-      "InNodePinIdentifier": "8060dcc8-d146-40d0-9222-abcad41e4c28",
-      "OutNodeIdentifier": "8b9fd604-294d-4bb6-b354-859dc0166f2c",
-      "OutNodePinIdentifier": "418f6a52-6828-4201-ba81-e0e6d2f7dec1"
-    },
-    {
-      "InNodeIdentifier": "153b18ea-ced9-4b68-980d-b60119be0237",
-      "InNodePinIdentifier": "24fe3c17-02a6-4c06-af15-d6aa6382a74a",
-      "OutNodeIdentifier": "ec1d4558-33d4-4d5d-bd58-014666a8a5b0",
-      "OutNodePinIdentifier": "f216d438-441f-4993-82ab-e555240cee77"
     },
     {
       "InNodeIdentifier": "0ca22c95-4bb4-4b7f-8dff-8c9a98f4e1fd",
@@ -896,6 +878,24 @@ Class[Type:"Behavior Tree Service"]
       "InNodePinIdentifier": "4b78742d-f0f2-4c4e-bfe8-6b85764495ac",
       "OutNodeIdentifier": "eab18773-f8ea-43d9-940e-a293ad3de951",
       "OutNodePinIdentifier": "03fd0349-8c7b-4101-be53-806674e8f381"
+    },
+    {
+      "InNodeIdentifier": "e733c3b1-d173-47bc-b3d0-1337c917f3d8",
+      "InNodePinIdentifier": "8060dcc8-d146-40d0-9222-abcad41e4c28",
+      "OutNodeIdentifier": "fe743471-b515-4de7-a5b3-3af73ab37137",
+      "OutNodePinIdentifier": "093b33a7-9725-4275-8f9b-a166b3db2ef7"
+    },
+    {
+      "InNodeIdentifier": "153b18ea-ced9-4b68-980d-b60119be0237",
+      "InNodePinIdentifier": "24fe3c17-02a6-4c06-af15-d6aa6382a74a",
+      "OutNodeIdentifier": "ebdd95e9-f6f5-4736-a0a7-7eefac96ee23",
+      "OutNodePinIdentifier": "4783f852-db14-45e3-a751-46d6d8eb9e88"
+    },
+    {
+      "InNodeIdentifier": "8303d491-3ddf-4ec1-94cf-cf036368aceb",
+      "InNodePinIdentifier": "eed45138-ef3f-4755-8257-5ce94a9018c6",
+      "OutNodeIdentifier": "cf6bb6e5-5d78-4190-bf92-33b672c8d94f",
+      "OutNodePinIdentifier": "6b63c502-187d-4d64-a621-6af44d768365"
     }
   ],
   "ExecutionLinks": [
@@ -920,7 +920,6 @@ Class[Type:"Behavior Tree Service"]
       "Message": "New Comment",
       "BeginNodeIdentifier": "6eedc637-a86f-4593-89c5-b6ff78f24309",
       "EndNodeIdentifier": "6eedc637-a86f-4593-89c5-b6ff78f24309",
-      "Color": "#FF007A74",
       "IncludeLocalVarUpdate": false,
       "InactiveCodeGroup": true
     }

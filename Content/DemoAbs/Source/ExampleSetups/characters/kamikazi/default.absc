@@ -1,5 +1,6 @@
-#buildtarget:nodegraph
+#buildtarget:text
 #text:
+
 
 Class[
     Type:"Actor Component",
@@ -9,9 +10,9 @@ Class[
 {
     Event[Name:"Tick"]
     {
-        if (Less_DoubleDouble(
-            (
-                Subtract_VectorVector(
+        if (LessThan(
+            Length(
+                Subtract(
                     K2_GetActorLocation(
                         GetPlayerPawn(
                             in[n:"OwnerActor"](),
@@ -49,6 +50,7 @@ Class[
 
 
 }
+
 
 
 #nodegraph:
