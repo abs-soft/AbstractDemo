@@ -56,6 +56,12 @@ void TArrayAAGenerator::FinalizeMemory()
     AAGeneratorInitUtilities::ValueTypeTreeTraversalContext context1(AAGeneratorInitUtilities::ValueTypeTreeTraversalType::Default);
     AAGeneratorInitUtilities::ValueTypeTreeTraversalContext context2(AAGeneratorInitUtilities::ValueTypeTreeTraversalType::Default);
     AAGeneratorInitUtilities::ValueTypeTreeTraversalContext context3(AAGeneratorInitUtilities::ValueTypeTreeTraversalType::Default);
+    constexpr auto resetContexts = [&]() {
+        context0 = AAGeneratorInitUtilities::ValueTypeTreeTraversalContext(AAGeneratorInitUtilities::ValueTypeTreeTraversalType::Default);
+        context1 = AAGeneratorInitUtilities::ValueTypeTreeTraversalContext(AAGeneratorInitUtilities::ValueTypeTreeTraversalType::Default);
+        context2 = AAGeneratorInitUtilities::ValueTypeTreeTraversalContext(AAGeneratorInitUtilities::ValueTypeTreeTraversalType::Default);
+        context3 = AAGeneratorInitUtilities::ValueTypeTreeTraversalContext(AAGeneratorInitUtilities::ValueTypeTreeTraversalType::Default);
+    };
 
     AAGeneratorUtilities::NodeDefinitionData makeNodeDefinition(
         FString::Printf(TEXT("Make%s"), *ExportName()),
@@ -69,27 +75,94 @@ void TArrayAAGenerator::FinalizeMemory()
         *FString::Printf(
             TEXT("%s result = {};\nnew (&result) %s();\nreturn result;\n"),
             *ExportName(),
-            *ExportName(),
-            *m_qualifier->GetSourceType(context3)));
+            *m_qualifier->GetSourceType(context0)));
 
-    AAGeneratorUtilities::NodeDefinitionData addToNodeDefinition(
-        FString::Printf(TEXT("AddTo%s"), *ExportName()),
+    resetContexts();
+
+    AAGeneratorUtilities::NodeDefinitionData addElementNodeDefinition(
+        TEXT("AddArrayElement"),
         TEXT("Execution"),
-        FString::Printf(TEXT("Add to Array of %s"), *m_qualifier->GetChildren()[0]->GetDisplayName()),
-        FString::Printf(TEXT("AddToArrayOf%s"), *m_qualifier->GetChildren()[0]->GetDisplayName()),
-        TEXT("Array"),
-        TEXT("append push"),
+        TEXT("Add Array Element"),
+        TEXT("Add"),
+        FString::Printf(TEXT("%sArray"), *m_qualifier->GetChildren()[0]->GetDisplayName()),
+        FString::Printf(TEXT("array append push %s"), *m_qualifier->GetChildren()[0]->GetDisplayName().ToLower()),
         FString::Printf(TEXT("Adds a new element to an array of %s"), *m_qualifier->GetChildren()[0]->GetDisplayName()),
         TEXT("Execution"),
         *FString::Printf(
             TEXT("%s.Add(%s);\n"),
-            *m_qualifier->ConvertToSourceType(context1, TEXT("Target")),
-            *m_qualifier->GetChildren()[0]->ConvertToSourceType(context2, TEXT("NewElement"))));
-    addToNodeDefinition.AddInputParam(TEXT("Target"), FString::Printf(TEXT("__INREF__%s"), *ExportName()));
-    addToNodeDefinition.AddInputParam(TEXT("NewElement"), FString::Printf(TEXT("%s"), *m_qualifier->GetChildren()[0]->GetExportName(context0)));
+            *m_qualifier->ConvertToSourceType(context0, TEXT("Target")),
+            *m_qualifier->GetChildren()[0]->ConvertToSourceType(context1, TEXT("NewElement"))));
+    addElementNodeDefinition.AddInputParam(TEXT("Target"), FString::Printf(TEXT("__INREF__%s"), *ExportName()));
+    addElementNodeDefinition.AddInputParam(TEXT("NewElement"), FString::Printf(TEXT("%s"), *m_qualifier->GetChildren()[0]->GetExportName(context2)));
+
+    resetContexts();
+
+    AAGeneratorUtilities::NodeDefinitionData getLengthNodeDefinition(
+        TEXT("GetArrayLength"),
+        TEXT("Evaluation"),
+        TEXT("Get Array Length"),
+        TEXT("Length"),
+        FString::Printf(TEXT("%sArray"), *m_qualifier->GetChildren()[0]->GetDisplayName()),
+        FString::Printf(TEXT("array length %s"), *m_qualifier->GetChildren()[0]->GetDisplayName().ToLower()),
+        FString::Printf(TEXT("Get the length of an array of %s"), *m_qualifier->GetChildren()[0]->GetDisplayName()),
+        TEXT("AABInt32"),
+        *FString::Printf(
+            TEXT("return %s.Num();\n"),
+            *m_qualifier->ConvertToSourceType(context0, TEXT("Target"))));
+    getLengthNodeDefinition.AddInputParam(TEXT("Target"), FString::Printf(TEXT("__INREF__%s"), *ExportName()));
+
+    resetContexts();
+
+    AAGeneratorUtilities::NodeDefinitionData removeAtNodeDefinition(
+        TEXT("RemoveArrayElementAt"),
+        TEXT("Execution"),
+        TEXT("Remove Array Element At"),
+        TEXT("RemoveAt"),
+        FString::Printf(TEXT("%sArray"), *m_qualifier->GetChildren()[0]->GetDisplayName()),
+        FString::Printf(TEXT("array remove %s"), *m_qualifier->GetChildren()[0]->GetDisplayName().ToLower()),
+        FString::Printf(TEXT("Removes an element of an array of %s at the specified index"), *m_qualifier->GetChildren()[0]->GetDisplayName()),
+        TEXT("Execution"),
+        *FString::Printf(
+            TEXT("%s.RemoveAt(%s);\n"),
+            *m_qualifier->ConvertToSourceType(context0, TEXT("Target")),
+            TEXT("Index")));
+    removeAtNodeDefinition.AddInputParam(TEXT("Target"), FString::Printf(TEXT("__INREF__%s"), *ExportName()));
+    removeAtNodeDefinition.AddInputParam(TEXT("Index"), TEXT("AABInt32"));
+
+    resetContexts();
+
+    AAGeneratorInitUtilities::ValueTypeTreeTraversalContext returnContext(AAGeneratorInitUtilities::ValueTypeTreeTraversalType::Return);
+    const bool isEnumArray = m_qualifier->GetChildren()[0]->GetClassType() == AAGeneratorInitUtilities::ValueTypeBase::ClassType::EnumValueType;
+    if (!isEnumArray)
+    {
+        returnContext.PushQualifier(AAGeneratorInitUtilities::ValueTypeQualifier::Type::Reference);
+    }
+    AAGeneratorUtilities::NodeDefinitionData getAtNodeDefinition(
+        TEXT("GetArrayElementAt"),
+        TEXT("Evaluation"),
+        TEXT("Get Array Element At"),
+        TEXT("ElementAt"),
+        FString::Printf(TEXT("%sArray"), *m_qualifier->GetChildren()[0]->GetDisplayName()),
+        FString::Printf(TEXT("array get %s"), *m_qualifier->GetChildren()[0]->GetDisplayName().ToLower()),
+        FString::Printf(TEXT("Gets an element of an array of %s at the specified index"), *m_qualifier->GetChildren()[0]->GetDisplayName()),
+        isEnumArray ?
+            *m_qualifier->GetChildren()[0]->GetExportName(context0) :
+            FString::Printf(TEXT("__REF__%s"), *m_qualifier->GetChildren()[0]->GetExportName(context0)),
+        *FString::Printf(
+            TEXT("return %s;\n"),
+            *m_qualifier->GetChildren()[0]->ConvertToAAType(
+                returnContext,
+                FString::Printf(
+                    TEXT("%s[Index]"),
+                    *m_qualifier->ConvertToSourceType(context1, TEXT("Target"))))));
+    getAtNodeDefinition.AddInputParam(TEXT("Target"), FString::Printf(TEXT("__INREF__%s"), *ExportName()));
+    getAtNodeDefinition.AddInputParam(TEXT("Index"), TEXT("AABInt32"));
 
     AddNodeDefinition(makeNodeDefinition);
-    AddNodeDefinition(addToNodeDefinition);
+    AddNodeDefinition(addElementNodeDefinition);
+    AddNodeDefinition(getLengthNodeDefinition);
+    AddNodeDefinition(removeAtNodeDefinition);
+    AddNodeDefinition(getAtNodeDefinition);
 }
 
 FString TArrayAAGenerator::GetClassName() const

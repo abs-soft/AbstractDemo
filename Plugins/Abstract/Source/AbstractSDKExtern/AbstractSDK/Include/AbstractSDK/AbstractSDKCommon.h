@@ -392,7 +392,7 @@ namespace AbstractSDK
 #define ABSTRACT_SDK_VALUE_TYPE_CONVERSION_RULE(fromType, toType) static_assert(std::is_convertible<fromType, toType>::value, "Invalid conversion rule.");
 #define ABSTRACT_SDK_VALUE_TYPE_CONVERSION_RULE_EXTERN(fromType, toType) static_assert(std::is_pointer<fromType>::value && std::is_pointer<toType>::value, "Extern conversion rules only allow pointer-based types");
 
-#define ABSTRACT_SDK_ENUM(properties, name) enum class name {
+#define ABSTRACT_SDK_ENUM(properties, name) enum class name; typedef name& __REF__##name; enum class name {
 #define _____ABSTRACT_SDK_ENUM_ENTRY_1(label) _##label,
 #define _____ABSTRACT_SDK_ENUM_ENTRY_2(label, value) _##label = value,
 #define _____ABSTRACT_SDK_ENUM_ENTRY_overload(_1, _2, NAME, ...) NAME

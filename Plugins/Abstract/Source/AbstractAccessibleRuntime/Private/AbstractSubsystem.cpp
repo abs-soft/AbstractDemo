@@ -59,9 +59,6 @@ void UAbstractSubsystem::Initialize(FSubsystemCollectionBase& Collection)
     AbstractLoader::Load(ProjectPath / abexFilepath);
 
     InitializeExterns();
-
-    UObject* testO = nullptr;
-    AActor* test = Cast<AActor>(testO);
 }
 
 void UAbstractSubsystem::Deinitialize()

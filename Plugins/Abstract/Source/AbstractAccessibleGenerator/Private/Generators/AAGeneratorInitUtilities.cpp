@@ -764,7 +764,7 @@ const FString& PureValueType::GetName() const
 
 FString PureValueType::GetDisplayName() const
 {
-    return m_name.Mid(1);
+    return m_type == Type::BaseType ? m_name : m_name.Mid(1);
 }
 
 bool PureValueType::Supported(ValueTypeTreeTraversalContext& context) const
@@ -1019,7 +1019,7 @@ FString PureValueType::ConvertToAAType(ValueTypeTreeTraversalContext& context, c
             {
                 if (context.HasQualifier(ValueTypeQualifier::Type::Reference))
                 {
-                    return FString::Printf(TEXT("AA%s::Const(%s)"), *m_name, *value);
+                    return FString::Printf(TEXT("AA%s::Convert(%s)"), *m_name, *value);
                 }
                 else
                 {
