@@ -385,6 +385,7 @@ namespace AbstractSDK
 #define ABSTRACT_SDK_VALUE_TYPE_SUPPORT_EXECUTION(type) \
     typedef void type; \
     static_assert(std::is_void<type>::value, "Execution type must be a void type");
+#define ABSTRACT_SDK_VALUE_TYPE_SUPPORT_ABS_CLASS(type) typedef AbstractSDK::AbsClass* type;
 #define ABSTRACT_SDK_VALUE_TYPE_SUPPORT_INTEGER_EDITOR(type) static_assert(std::is_convertible<type, int32_t>::value && std::is_convertible<int32_t, type>::value, "Invalid type for integer editor");
 #define ABSTRACT_SDK_VALUE_TYPE_SUPPORT_NUMBER_EDITOR(type) static_assert(std::is_convertible<type, float>::value && std::is_convertible<float, type>::value, "Invalid type for integer editor");
 #define ABSTRACT_SDK_VALUE_TYPE_SUPPORT_BOOLEAN_EDITOR(type) static_assert(std::is_convertible<type, bool>::value && std::is_convertible<bool, type>::value, "Invalid type for integer editor");

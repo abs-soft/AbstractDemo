@@ -20,41 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#pragma once
+#include "stdafx.h"
+#include "AAAbsClass.h"
 
-#include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
-#include "Actor/UE_ActorComponent.h"
-#include "AbstractBasedInterface.h"
-#include "ActorComponent_AbstractBased.generated.h"
-
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class ABSTRACTACCESSIBLERUNTIME_API UActorComponent_AbstractBased : public UActorComponent, public IAbstractBasedInterface
-{
-	GENERATED_BODY()
-
-public:
-	UActorComponent_AbstractBased();
-	virtual void PostLoad() override;
-
-	UPROPERTY(EditAnywhere)
-	FString AbstractClassDefinitionIdentifier;
-
-	UFUNCTION(BlueprintCallable)
-	void InvokeOnBeginOverlap(AActor* otherActor);
-
-	UFUNCTION(BlueprintCallable)
-	void InvokeOnEndOverlap(AActor* otherActor);
-
-protected:
-	virtual void BeginPlay() override;
-
-public:
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-public:
-	virtual AbstractSDK::AbsClass* GetInternal() override;
-
-private:
-	UE_ActorComponent m_internal;
-};
+ABSTRACT_SDK_NODE_DEFINITION_EXTERN_IMP(GetInternalAbsClass, AAAbsClass, ABS_SDK_PARAM(AAUObject, Source));

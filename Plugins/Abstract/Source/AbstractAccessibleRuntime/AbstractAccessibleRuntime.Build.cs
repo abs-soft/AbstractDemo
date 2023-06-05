@@ -57,7 +57,8 @@ public class AbstractAccessibleRuntime : ModuleRules
 				"AbstractSDK",
 				"AbstractAccessible",
                 // "MyProject",
-                // "ClothingSystemRuntimeInterface",
+                "ClothingSystemRuntimeInterface",
+				"AudioExtensions",
                 "UMG",
 				"vs3"
             });

@@ -13,7 +13,8 @@ Class[Type:"Behavior Tree Service"]
             in[n:"OwnerNode"](),
             MakeAAFBlackboardKeySelector(
                 MakeName(
-                    "player_location")),
+                    "player_location"),
+                GetInvalidUEClass()),
             test Vector);
         Return(
             EBTNodeResult.Succeeded);
@@ -174,39 +175,6 @@ Class[Type:"Behavior Tree Service"]
       "Extensions": [],
       "Position": {
         "X": 1500.0,
-        "Y": 285.0
-      },
-      "Color": "#FF2D5C1F"
-    },
-    {
-      "Identifier": "a0db071f-1a9d-46dc-9b6d-3a30196b7e4f",
-      "DefinitionNamespacedLabel": "MakeAAFBlackboardKeySelector_AAFBlackboardKeySelector__CREF__AAFName",
-      "Properties": [],
-      "InPins": [
-        {
-          "Identifier": "e14120bb-613e-478c-ae15-57107965fc97",
-          "Label": "_SelectedKeyName",
-          "ValueTypeNamespacedLabel": "AAFName",
-          "Qualifier": 3,
-          "EditorData": null,
-          "NativeParamIndex": 0
-        }
-      ],
-      "OutPin": {
-        "Identifier": "437de53c-3b6d-4562-a1ca-04175c5bb359",
-        "Label": "Result",
-        "ValueTypeNamespacedLabel": "AAFBlackboardKeySelector",
-        "Qualifier": 0,
-        "EditorData": null,
-        "NativeParamIndex": -1
-      },
-      "RefOutPins": [],
-      "UnconditionalExecutionInPin": null,
-      "UnconditionalExecutionOutPin": null,
-      "ConditionalExecutionOutPins": [],
-      "Extensions": [],
-      "Position": {
-        "X": 1800.0,
         "Y": 285.0
       },
       "Color": "#FF2D5C1F"
@@ -816,6 +784,71 @@ Class[Type:"Behavior Tree Service"]
         "Y": 110.0
       },
       "Color": "#FF2D5C1F"
+    },
+    {
+      "Identifier": "70b24166-56d5-42ce-ba72-cf36e9fb8410",
+      "DefinitionNamespacedLabel": "MakeAAFBlackboardKeySelector_AAFBlackboardKeySelector__CREF__AAFNameAAUClass",
+      "Properties": [],
+      "InPins": [
+        {
+          "Identifier": "de294568-5c1b-4229-9eaf-3ef060e7d68a",
+          "Label": "_SelectedKeyName",
+          "ValueTypeNamespacedLabel": "AAFName",
+          "Qualifier": 3,
+          "EditorData": null,
+          "NativeParamIndex": 0
+        },
+        {
+          "Identifier": "b04b4b56-4dea-438d-941b-8cf33b56c0ff",
+          "Label": "_SelectedKeyType",
+          "ValueTypeNamespacedLabel": "AAUClass",
+          "Qualifier": 0,
+          "EditorData": null,
+          "NativeParamIndex": 1
+        }
+      ],
+      "OutPin": {
+        "Identifier": "6787d869-1a23-47de-ba18-2753df7fcfa8",
+        "Label": "Result",
+        "ValueTypeNamespacedLabel": "AAFBlackboardKeySelector",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": null,
+      "UnconditionalExecutionOutPin": null,
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 1775.1666666666663,
+        "Y": 249.18833333333345
+      },
+      "Color": "#FF2D5C1F"
+    },
+    {
+      "Identifier": "3ee9a9a9-b963-4e6c-9399-8cceed90c87f",
+      "DefinitionNamespacedLabel": "GetInvalidUEClassType_AAUClass",
+      "Properties": [],
+      "InPins": [],
+      "OutPin": {
+        "Identifier": "94c47cd5-fa85-4642-ab60-41c91b23bd63",
+        "Label": "Result",
+        "ValueTypeNamespacedLabel": "AAUClass",
+        "Qualifier": 0,
+        "EditorData": null,
+        "NativeParamIndex": -1
+      },
+      "RefOutPins": [],
+      "UnconditionalExecutionInPin": null,
+      "UnconditionalExecutionOutPin": null,
+      "ConditionalExecutionOutPins": [],
+      "Extensions": [],
+      "Position": {
+        "X": 1455.1666666666665,
+        "Y": 448.52166666666676
+      },
+      "Color": "#FF2D5C1F"
     }
   ],
   "Links": [
@@ -824,18 +857,6 @@ Class[Type:"Behavior Tree Service"]
       "InNodePinIdentifier": "2d962bd7-a147-4128-b1c0-ff47364db178",
       "OutNodeIdentifier": "c7df41f7-f393-4564-9365-4451121b7c4b",
       "OutNodePinIdentifier": "8a8e6b1f-e903-443a-b553-a32e0c05627d"
-    },
-    {
-      "InNodeIdentifier": "a0db071f-1a9d-46dc-9b6d-3a30196b7e4f",
-      "InNodePinIdentifier": "e14120bb-613e-478c-ae15-57107965fc97",
-      "OutNodeIdentifier": "51a9c4fa-8721-46f1-bd8c-af64d69f8826",
-      "OutNodePinIdentifier": "39e2a3b4-ece1-4f64-bf83-b6a644aac643"
-    },
-    {
-      "InNodeIdentifier": "e733c3b1-d173-47bc-b3d0-1337c917f3d8",
-      "InNodePinIdentifier": "17881764-1568-4061-a7a8-75793cea5226",
-      "OutNodeIdentifier": "a0db071f-1a9d-46dc-9b6d-3a30196b7e4f",
-      "OutNodePinIdentifier": "437de53c-3b6d-4562-a1ca-04175c5bb359"
     },
     {
       "InNodeIdentifier": "6eedc637-a86f-4593-89c5-b6ff78f24309",
@@ -896,6 +917,24 @@ Class[Type:"Behavior Tree Service"]
       "InNodePinIdentifier": "eed45138-ef3f-4755-8257-5ce94a9018c6",
       "OutNodeIdentifier": "cf6bb6e5-5d78-4190-bf92-33b672c8d94f",
       "OutNodePinIdentifier": "6b63c502-187d-4d64-a621-6af44d768365"
+    },
+    {
+      "InNodeIdentifier": "70b24166-56d5-42ce-ba72-cf36e9fb8410",
+      "InNodePinIdentifier": "de294568-5c1b-4229-9eaf-3ef060e7d68a",
+      "OutNodeIdentifier": "51a9c4fa-8721-46f1-bd8c-af64d69f8826",
+      "OutNodePinIdentifier": "39e2a3b4-ece1-4f64-bf83-b6a644aac643"
+    },
+    {
+      "InNodeIdentifier": "e733c3b1-d173-47bc-b3d0-1337c917f3d8",
+      "InNodePinIdentifier": "17881764-1568-4061-a7a8-75793cea5226",
+      "OutNodeIdentifier": "70b24166-56d5-42ce-ba72-cf36e9fb8410",
+      "OutNodePinIdentifier": "6787d869-1a23-47de-ba18-2753df7fcfa8"
+    },
+    {
+      "InNodeIdentifier": "70b24166-56d5-42ce-ba72-cf36e9fb8410",
+      "InNodePinIdentifier": "b04b4b56-4dea-438d-941b-8cf33b56c0ff",
+      "OutNodeIdentifier": "3ee9a9a9-b963-4e6c-9399-8cceed90c87f",
+      "OutNodePinIdentifier": "94c47cd5-fa85-4642-ab60-41c91b23bd63"
     }
   ],
   "ExecutionLinks": [

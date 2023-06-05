@@ -40,6 +40,18 @@ ABSTRACT_SDK_VALUE_TYPE_DEFINITION_EXTERN(
 
 ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE(
     ABS_SDK_PROPERTIES(
+        Type = "Evaluation",
+        NodeDisplayText = "Get Invalid UE Class Type",
+        ScriptName = "GetInvalidUEClass",
+        Category = "UE Type",
+        Keywords = "class type",
+        ToolTips = "Gets an invalid UE Class Type that can be used as a default value in case it's optional.",
+        Priority = "high"),
+    GetInvalidUEClassType,
+    AAUClass);
+
+ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE(
+    ABS_SDK_PROPERTIES(
         Type="Evaluation",
         NodeDisplayText="Get UE Class Type",
         ScriptName="GetUEClass",

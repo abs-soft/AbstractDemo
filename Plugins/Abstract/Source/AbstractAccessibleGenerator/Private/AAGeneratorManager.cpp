@@ -53,6 +53,10 @@ void FAAGeneratorManager::Initialize(const FString& RootLocalPath, const FString
         FPaths::Combine(
             *IPluginManager::Get().FindPlugin("Abstract")->GetBaseDir(),
             TEXT("Source/AbstractAccessibleRuntime/Generated"));
+    m_abstractBlueprintFunctionLibrary =
+        FPaths::Combine(
+            *IPluginManager::Get().FindPlugin("Abstract")->GetBaseDir(),
+            TEXT("Source/AbstractAccessibleRuntime/Public/AbstractBlueprintFunctionLibrary"));
     m_rootLocalPath = RootLocalPath;
     m_rootBuildPath = RootBuildPath;
     m_includeBase = IncludeBase;
@@ -142,7 +146,8 @@ void FAAGeneratorManager::SaveToFiles()
 #include \"Core/AAFString.h\"\n\
 #include \"Core/AAFName.h\"\n\
 #include \"Core/AAFText.h\"\n\
-#include \"Core/AAUClass.h\"\n\n");
+#include \"Core/AAUClass.h\"\n\
+#include \"Core/AAAbsClass.h\"\n\n");
     for (auto &generatorEntry : m_generators)
     {
         declarationContent += generatorEntry.Value->ExportHeaderContent();
@@ -256,6 +261,40 @@ TEXT("\
 
     FString vcxpropFilepath = m_abstractAccessibleOutDir / TEXT("Generated.props");
     if (!FFileHelper::SaveStringToFile(vcxpropFileContent, *vcxpropFilepath))
+    {
+        // UE_LOG(LogLuaGenerator, Error, TEXT("Failed to save header export:%s"), *GetFileName());
+    }
+
+    FString forwardDeclContent = {};
+    FString functionDeclContent = {};
+    FString definitionContent = {};
+    for (auto& generatorEntry : m_generators)
+    {
+        FString forwardDeclaration = generatorEntry.Value->ExportBlueprintFunctionLibraryForwardDecl();
+        if (forwardDeclaration.Len() > 0)
+        {
+            forwardDeclContent += forwardDeclaration + TEXT("\n");
+        }
+
+        FString functionDeclaration = generatorEntry.Value->ExportBlueprintFunctionLibraryDeclarations();
+        if (functionDeclaration.Len() > 0)
+        {
+            functionDeclContent += functionDeclaration + TEXT("\n\n");
+        }
+
+        FString functionDefinition = generatorEntry.Value->ExportBlueprintFunctionLibraryDefinitions();
+        if (functionDefinition.Len() > 0)
+        {
+            definitionContent += functionDefinition + TEXT("\n\n");
+        }
+    }
+
+    FString forwardDeclFile = m_abstractBlueprintFunctionLibrary + TEXT(".forward.absgen.txt");
+    FString functionDeclFile = m_abstractBlueprintFunctionLibrary + TEXT(".decl.absgen.txt");
+    FString definitionFile = m_abstractBlueprintFunctionLibrary + TEXT(".def.absgen.txt");
+    if (!FFileHelper::SaveStringToFile(forwardDeclContent, *forwardDeclFile) ||
+        !FFileHelper::SaveStringToFile(functionDeclContent, *functionDeclFile) ||
+        !FFileHelper::SaveStringToFile(definitionContent, *definitionFile))
     {
         // UE_LOG(LogLuaGenerator, Error, TEXT("Failed to save header export:%s"), *GetFileName());
     }

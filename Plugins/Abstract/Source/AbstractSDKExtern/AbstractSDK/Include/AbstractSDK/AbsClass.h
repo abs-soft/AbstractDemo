@@ -63,7 +63,7 @@ namespace AbstractSDK
         }
 
         template<typename T>
-        bool GetClassVar(AbsStringParam name, T& result) const
+        T* GetClassVar(AbsStringParam name) const
         {
             if (Validate())
             {
@@ -72,13 +72,12 @@ namespace AbstractSDK
                 if (queryResult)
                 {
 #pragma warning(disable:4191)
-                    result = *reinterpret_cast<T*>(reinterpret_cast<InternalFunctionPtr>(queryResult)(GetStateDataAddr()));
+                    return reinterpret_cast<T*>(reinterpret_cast<InternalFunctionPtr>(queryResult)(GetStateDataAddr()));
 #pragma warning(default:4191)
-                    return true;
                 }
             }
 
-            return false;
+            return nullptr;
         }
 
     protected:

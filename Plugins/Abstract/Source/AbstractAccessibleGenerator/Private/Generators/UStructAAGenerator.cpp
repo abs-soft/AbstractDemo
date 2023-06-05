@@ -321,3 +321,19 @@ void FUStructAAGenerator::ExportDataMembersToMemory()
 // 	funcBody += EndLinePrintf(TEXT("\treturn 0;"));
 // 	return ExtraFuncDestory;
 // }
+
+
+FString FUStructAAGenerator::ExportBlueprintFunctionLibraryForwardDecl() const
+{
+	return {};
+}
+
+FString FUStructAAGenerator::ExportBlueprintFunctionLibraryDeclarations() const
+{
+	return {};
+}
+
+FString FUStructAAGenerator::ExportBlueprintFunctionLibraryDefinitions() const
+{
+	return {};
+}

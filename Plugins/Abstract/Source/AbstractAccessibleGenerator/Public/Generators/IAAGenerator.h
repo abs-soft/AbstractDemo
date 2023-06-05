@@ -51,6 +51,10 @@ public:
     virtual bool RequiresImplementation() const = 0;
     virtual FString ExportAdditionalIncludeDirectives() const = 0;
 
+    virtual FString ExportBlueprintFunctionLibraryForwardDecl() const = 0;
+    virtual FString ExportBlueprintFunctionLibraryDeclarations() const = 0;
+    virtual FString ExportBlueprintFunctionLibraryDefinitions() const = 0;
+
     virtual Type GetType() const { return Type::Invalid; };
 
     void AddNodeDefinition(const AAGeneratorUtilities::NodeDefinitionData& newEntry);

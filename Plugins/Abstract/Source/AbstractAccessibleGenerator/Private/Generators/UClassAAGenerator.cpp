@@ -283,6 +283,11 @@ bool FUClassAAGenerator::CanExport() const
 	UClass* superClass = m_uclass;
 	while (superClass != nullptr)
 	{
+		if (superClass->GetName().Contains(TEXT("DEPRECATED")))
+		{
+			return false;
+		}
+
 		FString superClassName = FString::Printf(TEXT("%s%s"), superClass->GetPrefixCPP(), *superClass->GetName());
 		if (superClassName == TEXT("UProperty"))
 		{
@@ -330,6 +335,30 @@ void FUClassAAGenerator::FinalizeMemory()
 
 		if (uobjectFound)
 		{
+			AAGeneratorUtilities::NodeDefinitionData getTypeDefinition(
+				*FString::Printf(TEXT("GetUEClassTypeOf%s"), *GetClassName()),
+				TEXT("Evaluation"),
+				*FString::Printf(TEXT("Get UE Class Type of %s"), *m_uclass->GetDisplayNameText().ToString()),
+				*FString::Printf(TEXT("GetUEClassTypeOf%s"), *ExportName()),
+				*m_uclass->GetDisplayNameText().ToString(),
+				TEXT("ue class type"),
+				*FString::Printf(TEXT("Gets the UE Class Type of %s"), *m_uclass->GetDisplayNameText().ToString()),
+				TEXT("AAUClass"),
+				*FString::Printf(TEXT("return %s::StaticClass();\n"), *GetClassName()));
+			AddNodeDefinition(getTypeDefinition);
+
+			AAGeneratorUtilities::NodeDefinitionData getInvalidInstanceDefinition(
+				*FString::Printf(TEXT("GetInvalidInstanceOf%s"), *GetClassName()),
+				TEXT("Evaluation"),
+				*FString::Printf(TEXT("Get Invalid Instance of %s"), *m_uclass->GetDisplayNameText().ToString()),
+				*FString::Printf(TEXT("GetInvalidInstanceOf%s"), *ExportName()),
+				*m_uclass->GetDisplayNameText().ToString(),
+				TEXT("ue invalid instance"),
+				*FString::Printf(TEXT("Gets an invalid (nullptr) instance of %s"), *m_uclass->GetDisplayNameText().ToString()),
+				*ExportName(),
+				TEXT("return nullptr;\n"));
+			AddNodeDefinition(getInvalidInstanceDefinition);
+
 			for (UClass* superClass : superClasses)
 			{
 				FString superClassName = FString::Printf(TEXT("%s%s"), superClass->GetPrefixCPP(), *superClass->GetName());
@@ -637,4 +666,56 @@ bool FUClassAAGenerator::CanExportFunction(UFunction* function)
 	// }
 
 	return function->HasAnyFunctionFlags(FUNC_BlueprintCallable | FUNC_BlueprintPure);
+}
+
+FString FUClassAAGenerator::ExportBlueprintFunctionLibraryForwardDecl() const
+{
+	return FString::Printf(
+		TEXT("class %s;"),
+		*GetClassName());
+}
+
+FString FUClassAAGenerator::ExportBlueprintFunctionLibraryDeclarations() const
+{
+	return FString::Printf(
+		TEXT("\
+	UFUNCTION(BlueprintPure)\n\
+	static %s* GetAbsClassVar%s(UObject* target, FString label);\n\n\
+	UFUNCTION(BlueprintCallable)\n\
+	static void SetAbsClassVar%s(UObject* target, FString label, %s* value);"),
+		*GetClassName(),
+		*m_uclass->GetName(),
+		*m_uclass->GetName(),
+		*GetClassName());
+}
+
+FString FUClassAAGenerator::ExportBlueprintFunctionLibraryDefinitions() const
+{
+	return FString::Printf(
+		TEXT("\
+%s* UAbstractBlueprintFunctionLibrary::GetAbsClassVar%s(UObject* target, FString label)\n\
+{\n\
+    if (IAbstractBasedInterface* abstractBasedObject = Cast<IAbstractBasedInterface>(target))\n\
+    {\n\
+        if (%s** result = abstractBasedObject->GetInternal()->GetClassVar<%s*>(TCHAR_TO_UTF8(*label)))\n\
+        {\n\
+            return *result;\n\
+        }\n\
+    }\n\n\
+    return nullptr;\n\
+}\n\n\
+void UAbstractBlueprintFunctionLibrary::SetAbsClassVar%s(UObject* target, FString label, %s* value)\n\
+{\n\
+    if (IAbstractBasedInterface* abstractBasedObject = Cast<IAbstractBasedInterface>(target))\n\
+    {\n\
+        abstractBasedObject->GetInternal()->SetClassVar<%s*>(TCHAR_TO_UTF8(*label), value);\n\
+    }\n\
+}"),
+		*GetClassName(),
+		*m_uclass->GetName(),
+		*GetClassName(),
+		*GetClassName(),
+		*m_uclass->GetName(),
+		*GetClassName(),
+		*GetClassName());
 }

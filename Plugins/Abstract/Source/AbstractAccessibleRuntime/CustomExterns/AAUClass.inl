@@ -32,6 +32,11 @@ namespace
 		return nullptr;
 	}
 
+	AAUClass GetInvalidUEClassTypeIMPLEMENTATION()
+	{
+		return nullptr;
+	}
+
 	AAAActor SpawnActorFromUEClassTypeIMPLEMENTATION(AAUObject WorldContextObject, AAUClass ActorType, __CREF__AAFVector Location)
 	{
 		if (GEngine != nullptr)
@@ -64,6 +69,10 @@ namespace AbstractRuntimeCustomExterns
 			GetUEClassTypeIMPLEMENTATION,
 			AAUClass,
 			ABS_SDK_PARAM(AAUObject, Source));
+		ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE(
+			GetInvalidUEClassType,
+			GetInvalidUEClassTypeIMPLEMENTATION,
+			AAUClass);
 		ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE(
 			SpawnActorFromUEClassType,
 			SpawnActorFromUEClassTypeIMPLEMENTATION,

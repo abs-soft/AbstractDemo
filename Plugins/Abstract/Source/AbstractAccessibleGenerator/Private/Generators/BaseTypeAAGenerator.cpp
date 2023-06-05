@@ -200,3 +200,18 @@ FString FBaseTypeAAGenerator::ExportAdditionalIncludeDirectives() const
 {
 	return {};
 }
+
+FString FBaseTypeAAGenerator::ExportBlueprintFunctionLibraryForwardDecl() const
+{
+	return {};
+}
+
+FString FBaseTypeAAGenerator::ExportBlueprintFunctionLibraryDeclarations() const
+{
+	return {};
+}
+
+FString FBaseTypeAAGenerator::ExportBlueprintFunctionLibraryDefinitions() const
+{
+	return {};
+}

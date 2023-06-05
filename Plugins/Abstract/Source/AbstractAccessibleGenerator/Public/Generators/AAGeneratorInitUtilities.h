@@ -177,7 +177,14 @@ namespace AAGeneratorInitUtilities
     public:
         virtual ClassType GetClassType() const override { return ClassType::ClassValueType; }
 
-        UClassValueType(ValueTypeBase* childType);
+        enum class Style
+        {
+            RawUClassPointer,
+            TSubClassOf,
+            TObjectPtr
+        };
+
+        UClassValueType(ValueTypeBase* childType, Style style);
         virtual ~UClassValueType() override {}
 
         virtual FString GetDisplayName() const override;
@@ -189,6 +196,7 @@ namespace AAGeneratorInitUtilities
         virtual FString GetDebugInfo() const override;
 
     private:
+        Style m_style;
         ValueTypeBase* m_childType;
     };
 

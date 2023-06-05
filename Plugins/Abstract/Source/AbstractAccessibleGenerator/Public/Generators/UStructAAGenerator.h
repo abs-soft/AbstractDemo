@@ -46,6 +46,10 @@ public:
     virtual bool RequiresImplementation() const override;
 	virtual FString ExportAdditionalIncludeDirectives() const override;
 
+	virtual FString ExportBlueprintFunctionLibraryForwardDecl() const override;
+	virtual FString ExportBlueprintFunctionLibraryDeclarations() const override;
+	virtual FString ExportBlueprintFunctionLibraryDefinitions() const override;
+
 private:
 	void ExportDataMembersToMemory();
 	// void ExportExtraFuncsToMemory();

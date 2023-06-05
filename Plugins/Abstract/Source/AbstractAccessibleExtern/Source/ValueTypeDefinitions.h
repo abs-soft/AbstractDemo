@@ -25,7 +25,6 @@ SOFTWARE.
 #include <AbstractSDK.h>
 
 ABSTRACT_SDK_VALUE_TYPE_SUPPORT_EXECUTION(Execution);
-
 ABSTRACT_SDK_VALUE_TYPE_DEFINITION(ABS_SDK_PROPERTIES(DisplayText = "Raw String", ScriptName = "RawString", Priority="high"), AABRawString, const char*);
 ABSTRACT_SDK_VALUE_TYPE_SUPPORT_STRING_EDITOR(AABRawString);
 

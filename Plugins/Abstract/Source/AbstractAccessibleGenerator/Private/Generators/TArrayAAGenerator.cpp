@@ -204,3 +204,18 @@ FString TArrayAAGenerator::ExportAdditionalIncludeDirectives() const
 {
     return {};
 }
+
+FString TArrayAAGenerator::ExportBlueprintFunctionLibraryForwardDecl() const
+{
+    return {};
+}
+
+FString TArrayAAGenerator::ExportBlueprintFunctionLibraryDeclarations() const
+{
+    return {};
+}
+
+FString TArrayAAGenerator::ExportBlueprintFunctionLibraryDefinitions() const
+{
+    return {};
+}

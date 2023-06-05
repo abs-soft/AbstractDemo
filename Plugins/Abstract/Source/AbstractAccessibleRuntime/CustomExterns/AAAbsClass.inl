@@ -20,41 +20,30 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#pragma once
-
-#include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
-#include "Actor/UE_ActorComponent.h"
-#include "AbstractBasedInterface.h"
-#include "ActorComponent_AbstractBased.generated.h"
-
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class ABSTRACTACCESSIBLERUNTIME_API UActorComponent_AbstractBased : public UActorComponent, public IAbstractBasedInterface
+namespace
 {
-	GENERATED_BODY()
+	AAAbsClass GetInternalAbsClassIMPLEMENTATION(AAUObject Source)
+	{
+		if (Source)
+		{
+		    if (IAbstractBasedInterface* abstractBasedObject = Cast<IAbstractBasedInterface>(Source))
+		    {
+		    	return abstractBasedObject->GetInternal();
+		    }
+		}
 
-public:
-	UActorComponent_AbstractBased();
-	virtual void PostLoad() override;
+		return nullptr;
+	}
+}
 
-	UPROPERTY(EditAnywhere)
-	FString AbstractClassDefinitionIdentifier;
-
-	UFUNCTION(BlueprintCallable)
-	void InvokeOnBeginOverlap(AActor* otherActor);
-
-	UFUNCTION(BlueprintCallable)
-	void InvokeOnEndOverlap(AActor* otherActor);
-
-protected:
-	virtual void BeginPlay() override;
-
-public:
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-public:
-	virtual AbstractSDK::AbsClass* GetInternal() override;
-
-private:
-	UE_ActorComponent m_internal;
-};
+namespace AbstractRuntimeCustomExterns
+{
+	void InitExterns_AbsClass()
+	{
+		ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DEFINE(
+			GetInternalAbsClass,
+			GetInternalAbsClassIMPLEMENTATION,
+			AAAbsClass,
+			ABS_SDK_PARAM(AAUObject, Source));
+	}
+}

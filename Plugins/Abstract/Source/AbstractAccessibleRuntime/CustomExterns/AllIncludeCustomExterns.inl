@@ -24,6 +24,7 @@ SOFTWARE.
 #include "AAFName.inl"
 #include "AAFText.inl"
 #include "AAUClass.inl"
+#include "AAAbsClass.inl"
 
 namespace AbstractRuntimeCustomExterns
 {
@@ -33,5 +34,6 @@ namespace AbstractRuntimeCustomExterns
 		InitExterns_FName();
 		// InitExterns_FText();
 		InitExterns_UClass();
+		InitExterns_AbsClass();
 	}
 }

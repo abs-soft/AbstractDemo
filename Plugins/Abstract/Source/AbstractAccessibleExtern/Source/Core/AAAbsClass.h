@@ -22,39 +22,18 @@ SOFTWARE.
 
 #pragma once
 
-#include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
-#include "Actor/UE_ActorComponent.h"
-#include "AbstractBasedInterface.h"
-#include "ActorComponent_AbstractBased.generated.h"
+#include <AbstractSDK.h>
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class ABSTRACTACCESSIBLERUNTIME_API UActorComponent_AbstractBased : public UActorComponent, public IAbstractBasedInterface
-{
-	GENERATED_BODY()
-
-public:
-	UActorComponent_AbstractBased();
-	virtual void PostLoad() override;
-
-	UPROPERTY(EditAnywhere)
-	FString AbstractClassDefinitionIdentifier;
-
-	UFUNCTION(BlueprintCallable)
-	void InvokeOnBeginOverlap(AActor* otherActor);
-
-	UFUNCTION(BlueprintCallable)
-	void InvokeOnEndOverlap(AActor* otherActor);
-
-protected:
-	virtual void BeginPlay() override;
-
-public:
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-public:
-	virtual AbstractSDK::AbsClass* GetInternal() override;
-
-private:
-	UE_ActorComponent m_internal;
-};
+ABSTRACT_SDK_VALUE_TYPE_SUPPORT_ABS_CLASS(AAAbsClass);
+ABSTRACT_SDK_NODE_DEFINITION_EXTERN_DECLARE(
+    ABS_SDK_PROPERTIES(
+        Type="Evaluation",
+        NodeDisplayText="Get Internal Abs Class",
+        ScriptName="GetInternalAbsClass",
+        Category="AbsClass",
+        Keywords="abs class internal",
+        ToolTips="Gets the internal Abs Class of an UE object if it has one.",
+        Priority = "high"),
+    GetInternalAbsClass,
+    AAAbsClass,
+    ABS_SDK_PARAM(AAUObject, Source));

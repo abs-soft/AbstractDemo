@@ -43,9 +43,21 @@ namespace
         "UAsyncActionLoadPrimaryAssetList",
         "UAsyncActionLoadPrimaryAssetClassList",
         "UAsyncActionChangePrimaryAssetBundles",
+        "UCameraLensEffectInterfaceClassSupportLibrary",
+        "UWidgetBlueprintGeneratedClass",
+        "UAnimBlueprintGeneratedClass",
+        "UBlueprintGeneratedClass",
         "FScriptTypedElementHandle",
         "FAudioParameter",
         "FScriptTypedElementListProxy",
+        "UAnimClassData",
+        "AAtmosphericFog",
+        "UAtmosphericFogComponent",
+        "FNavDataConfig",
+        "FBoneMirrorInfo",
+        "FAnimBlueprintFunctionData",
+        "FCustomAttributePerBoneData",
+        "FBoneMirrorInfo",
         "FMatrix",
         "FBox2D",
         "FTransform",
@@ -108,7 +120,20 @@ namespace
         "UMaterialExpressionVolumetricCloudEmptySpaceSkippingInput",
         "FActorTickFunction",
         "FActorComponentTickFunction",
-        "FGeometry"
+        "FGeometry",
+        // these are being set to __CONST__ when used as input?
+        "UAnimNotifyState_Trail",
+        "UAnimNotifyState_TimedParticleEffect",
+        "UAnimNotifyState_DisableRootMotion",
+        "UAnimNotify_ResumeClothingSimulation",
+        "UAnimNotify_ResetDynamics",
+        "UAnimNotify_ResetClothingSimulation",
+        "UAnimNotify_PlaySound",
+        "UAnimNotify_PlayParticleEffect",
+        "UAnimNotify_PauseClothingSimulation",
+        "UDamageType",
+        "UAnimNotifyState",
+        "UAnimNotify"
     };
     const TSet<FString> customImplementationTypes =
     {
@@ -337,7 +362,7 @@ void DebugPrintProp(FProperty* property)
     {
         debugPrint += TEXT("|NativeAccessSpecifierPrivate");
     }
-    // FAbstractAccessibleGeneratorGlobal::GetGeneratorManager().PropertyTypeAAInternal.Add(debugPrint + TEXT("\n"));
+    FAbstractAccessibleGeneratorGlobal::GetGeneratorManager().PropertyTypeAAInternal.Add(debugPrint + TEXT("\n"));
 }
 
 void InitValueTypeGenerator()
@@ -397,11 +422,26 @@ ValueTypeBase& ResolveValueType(FProperty* property)
         auto* classProp = CastField<FClassProperty>(property);
         if (classProp->HasAnyPropertyFlags(CPF_UObjectWrapper))
         {
+            FString innerType1;
+            FString outerType1 = classProp->GetCPPType(&innerType1, 0);
+            FString result1 = outerType1 + innerType1;
+            // FAbstractAccessibleGeneratorGlobal::GetGeneratorManager().PropertyTypeAAInternal.Add(classProp->GetCPPTypeForwardDeclaration() + TEXT("\n"));
+            // FAbstractAccessibleGeneratorGlobal::GetGeneratorManager().PropertyTypeAAInternal.Add(result1 + TEXT("\n"));
+            if (result1.Contains(TEXT("TObjectPtr")))
+            {
+                result = new AAGeneratorInitUtilities::UClassValueType(&ResolveValueTypeFromUClass(classProp->MetaClass), AAGeneratorInitUtilities::UClassValueType::Style::TObjectPtr);
+            }
+            else if (result1.Contains(TEXT("TSubclassOf")))
+            {
+                result = new AAGeneratorInitUtilities::UClassValueType(&ResolveValueTypeFromUClass(classProp->MetaClass), AAGeneratorInitUtilities::UClassValueType::Style::TSubClassOf);
+            }
             // result = new AAGeneratorInitUtilities::UClassValueType(&ResolveValueTypeFromUClass(classProp->MetaClass));
+            // FAbstractAccessibleGeneratorGlobal::GetGeneratorManager().PropertyTypeAAInternal.Add(TEXT("WRAPPER\n"));
         }
         else
         {
-            result = new AAGeneratorInitUtilities::UClassValueType(nullptr);
+            result = new AAGeneratorInitUtilities::UClassValueType(nullptr, AAGeneratorInitUtilities::UClassValueType::Style::RawUClassPointer);
+            // FAbstractAccessibleGeneratorGlobal::GetGeneratorManager().PropertyTypeAAInternal.Add(TEXT("NOPE\n"));
         }
     }
     else if (property->IsA(FWeakObjectProperty::StaticClass()))
@@ -496,7 +536,7 @@ bool IsCustomImplementationType(FString name)
 
 bool IsInvalidType(FString name)
 {
-    return invalidTypes.Contains(name) || forceInvalidTypes.Contains(name);
+    return name.Contains(TEXT("DEPRECATED")) || invalidTypes.Contains(name) || forceInvalidTypes.Contains(name);
 }
 
 void FinalizeValueTypeLoad()
@@ -526,11 +566,11 @@ void FinalizeValueTypeLoad()
                         {
                             generator->ExportToMemory();
                             FAbstractAccessibleGeneratorGlobal::GetGeneratorManager().AddGeneratorToMap(generator);
-                            FAbstractAccessibleGeneratorGlobal::GetGeneratorManager().PropertyTypeAAInternal.Add(TEXT("\nSTRUCT:") + pureChild->GetName());
+                            // FAbstractAccessibleGeneratorGlobal::GetGeneratorManager().PropertyTypeAAInternal.Add(TEXT("\nSTRUCT:") + pureChild->GetName());
                         }
                         else
                         {
-                            FAbstractAccessibleGeneratorGlobal::GetGeneratorManager().PropertyTypeAAInternal.Add(TEXT("\nSTRUCT NOPE:") + pureChild->GetName());
+                            // FAbstractAccessibleGeneratorGlobal::GetGeneratorManager().PropertyTypeAAInternal.Add(TEXT("\nSTRUCT NOPE:") + pureChild->GetName());
                             delete generator;
                         }
 
@@ -583,26 +623,64 @@ void FinalizeValueTypeLoad()
 
     for (const auto& entry : valueTypeRegistry)
     {
+        // ForEachValueType(
+        //     entry.Value,
+        //     AAGeneratorInitUtilities::ValueTypeBase::ClassType::ValueTypeQualifier,
+        //     [&](const auto* valueType)
+        //     {
+        //         ValueTypeTreeTraversalContext context(ValueTypeTreeTraversalType::Default);
+        //         auto* qualifier = reinterpret_cast<const AAGeneratorInitUtilities::ValueTypeQualifier*>(valueType);
+        //         if (qualifier->GetType() == ValueTypeQualifier::Type::Array &&
+        //             qualifier->Supported(context))
+        //         {
+        //             auto* generator = new TArrayAAGenerator(qualifier);
+        //             if (generator->CanExport())
+        //             {
+        //                 generator->ExportToMemory();
+        //                 FAbstractAccessibleGeneratorGlobal::GetGeneratorManager().AddGeneratorToMap(generator);
+        //             }
+        //         }
+        // 
+        //         return false;
+        //     });
+        TMap<FString, AAGeneratorInitUtilities::ValueTypeBase*> innerValueTypes = {};
         ForEachValueType(
             entry.Value,
-            AAGeneratorInitUtilities::ValueTypeBase::ClassType::ValueTypeQualifier,
-            [&](const auto* valueType)
+            AAGeneratorInitUtilities::ValueTypeBase::ClassType::PureValueType,
+            [&](auto* valueType)
             {
-                ValueTypeTreeTraversalContext context(ValueTypeTreeTraversalType::Default);
-                auto* qualifier = reinterpret_cast<const AAGeneratorInitUtilities::ValueTypeQualifier*>(valueType);
-                if (qualifier->GetType() == ValueTypeQualifier::Type::Array &&
-                    qualifier->Supported(context))
+                auto* pureChild = reinterpret_cast<AAGeneratorInitUtilities::PureValueType*>(valueType);
+                if (!IsInvalidType(pureChild->GetName()))
                 {
-                    auto* generator = new TArrayAAGenerator(qualifier);
-                    if (generator->CanExport())
-                    {
-                        generator->ExportToMemory();
-                        FAbstractAccessibleGeneratorGlobal::GetGeneratorManager().AddGeneratorToMap(generator);
-                    }
+                    innerValueTypes.Add(pureChild->GetName(), pureChild);
                 }
 
                 return false;
             });
+        ForEachValueType(
+            entry.Value,
+            AAGeneratorInitUtilities::ValueTypeBase::ClassType::EnumValueType,
+            [&](auto* valueType)
+            {
+                auto* enumValueType = reinterpret_cast<AAGeneratorInitUtilities::EnumValueType*>(valueType);
+                if (!IsInvalidType(enumValueType->GetDisplayName()))
+                {
+                    innerValueTypes.Add(enumValueType->GetDisplayName(), enumValueType);
+                }
+
+                return false;
+            });
+        for (auto& innerValueTypeEntry : innerValueTypes)
+        {
+            auto* tempArrayType = new ValueTypeQualifier(ValueTypeQualifier::Type::Array);
+            tempArrayType->AddChild(*innerValueTypeEntry.Value);
+            auto* generator = new TArrayAAGenerator(tempArrayType);
+            if (generator->CanExport())
+            {
+                generator->ExportToMemory();
+                FAbstractAccessibleGeneratorGlobal::GetGeneratorManager().AddGeneratorToMap(generator);
+            }
+        }
     }
 }
 
@@ -1441,8 +1519,9 @@ FString ValueTypeQualifier::GetDebugInfo() const
     return result;
 }
 
-UClassValueType::UClassValueType(ValueTypeBase* childType)
-    : m_childType(childType)
+UClassValueType::UClassValueType(ValueTypeBase* childType, Style style)
+    : m_style(style)
+    , m_childType(childType)
 {
     //
 }
@@ -1458,10 +1537,36 @@ FString UClassValueType::GetDisplayName() const
 
 bool UClassValueType::Supported(ValueTypeTreeTraversalContext& context) const
 {
-    if (m_childType != nullptr && m_childType->GetClassType() != ClassType::PureValueType)
+    switch (m_style)
     {
-        return false;
+        case Style::RawUClassPointer:
+        {
+            if (m_childType != nullptr)
+            {
+                return false;
+            }
+        }
+        break;
+
+        case Style::TSubClassOf:
+        {
+            if (m_childType == nullptr || m_childType->GetClassType() != ClassType::PureValueType)
+            {
+                return false;
+            }
+        }
+        break;
+
+        case Style::TObjectPtr:
+        {
+            return false;
+        }
+        break;
+
+        default:
+            return false;
     }
+
 
     switch (context.GetType())
     {
@@ -1845,6 +1950,7 @@ FunctionMemberExportInfo::FunctionMemberExportInfo(UFunction* function)
         {
             m_returnType = DataMemberExportInfo::Construct(function->GetReturnProperty());
 
+            // FAbstractAccessibleGeneratorGlobal::GetGeneratorManager().PropertyTypeAAInternal.Add(function->GetName() + TEXT("\n"));
             // DebugPrintProp(function->GetReturnProperty());
         }
 

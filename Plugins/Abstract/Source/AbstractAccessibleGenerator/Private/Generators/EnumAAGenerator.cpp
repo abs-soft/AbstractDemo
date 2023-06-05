@@ -125,3 +125,18 @@ FString FEnumAAGenerator::ExportAdditionalIncludeDirectives() const
 {
 	return {};
 }
+
+FString FEnumAAGenerator::ExportBlueprintFunctionLibraryForwardDecl() const
+{
+	return {};
+}
+
+FString FEnumAAGenerator::ExportBlueprintFunctionLibraryDeclarations() const
+{
+	return {};
+}
+
+FString FEnumAAGenerator::ExportBlueprintFunctionLibraryDefinitions() const
+{
+	return {};
+}

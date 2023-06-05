@@ -25,7 +25,7 @@ SOFTWARE.
 #include "CoreMinimal.h"
 #include "AbstractSDK.h"
 
-class AbstractLoader
+class ABSTRACTACCESSIBLERUNTIME_API AbstractLoader
 {
 public:
 	static void Unload();

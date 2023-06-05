@@ -50,6 +50,7 @@ private:
 
     FString m_abstractAccessibleOutDir;
     FString m_abstractRuntimeOutDir;
+    FString m_abstractBlueprintFunctionLibrary;
     FString m_rootLocalPath;
     FString m_rootBuildPath;
     FString m_includeBase;
