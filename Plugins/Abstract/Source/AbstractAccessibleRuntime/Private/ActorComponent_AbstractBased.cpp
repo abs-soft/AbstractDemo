@@ -28,16 +28,6 @@ UActorComponent_AbstractBased::UActorComponent_AbstractBased()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-void UActorComponent_AbstractBased::PostLoad()
-{
-	Super::PostLoad();
-
-	if (AbstractLoader::Loaded())
-	{
-		m_internal.LoadDefinition(AbstractLoader::GetLibrary(), TCHAR_TO_UTF8(*AbstractClassDefinitionIdentifier));
-	}
-}
-
 void UActorComponent_AbstractBased::InvokeOnBeginOverlap(AActor* otherActor)
 {
 	m_internal.OnBeginOverlap(this, GetOwner(), otherActor);
@@ -56,6 +46,11 @@ AbstractSDK::AbsClass* UActorComponent_AbstractBased::GetInternal()
 void UActorComponent_AbstractBased::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (AbstractLoader::Loaded())
+	{
+		m_internal.LoadDefinition(AbstractLoader::GetLibrary(), TCHAR_TO_UTF8(*AbstractClassDefinitionIdentifier));
+	}
 
 	m_internal.BeginPlay(this, GetOwner());
 }

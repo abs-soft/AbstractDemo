@@ -28,7 +28,7 @@ SOFTWARE.
 #include "AbstractSubsystem.generated.h"
 
 UCLASS()
-class ABSTRACTACCESSIBLERUNTIME_API UAbstractSubsystem : public UEngineSubsystem
+class ABSTRACTACCESSIBLERUNTIME_API UAbstractSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 

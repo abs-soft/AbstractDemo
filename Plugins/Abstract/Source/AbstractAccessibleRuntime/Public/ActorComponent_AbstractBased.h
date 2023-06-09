@@ -35,7 +35,6 @@ class ABSTRACTACCESSIBLERUNTIME_API UActorComponent_AbstractBased : public UActo
 
 public:
 	UActorComponent_AbstractBased();
-	virtual void PostLoad() override;
 
 	UPROPERTY(EditAnywhere)
 	FString AbstractClassDefinitionIdentifier;
